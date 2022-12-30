@@ -39,7 +39,7 @@ public class JumpGame {
     public boolean sol2(int[] nums) {
         int max = 0;
         for (int i = 0; i <= max; i++) {
-            System.out.println("i=" +i +", nums[" +i +"]=" +nums[i] +", max=" +max);
+            System.out.println("i=" + i + ", nums[" + i + "]=" + nums[i] + ", max=" + max);
             max = Math.max(max, i + nums[i]);
             if (max >= nums.length - 1) {
                 return true;
@@ -48,13 +48,14 @@ public class JumpGame {
         return false;
     }
 
+
     public static void main(String[] args) {
         JumpGame t = new JumpGame();
 
         int[] nums = { 2, 3, 1, 1, 4 };
-        //int[] nums = { 3, 2, 1, 0, 4 };
+        // int[] nums = { 3, 2, 1, 0, 4 };
 
+        // System.out.println(t.sol1(nums));
         System.out.println(t.sol1(nums));
-        System.out.println(t.sol2(nums));
     }
 }

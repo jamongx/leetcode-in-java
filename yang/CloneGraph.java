@@ -5,27 +5,27 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-
+// UndirectedGraphNode
 class GraphNode {
-    public int val;
-    public List<GraphNode> neighbors;
+    public int label;
+    public List<GraphNode> neighbors = new ArrayList<GraphNode>();
     
-    public GraphNode(int val) {
-        this.val = val;
+    public GraphNode(int label) {
+        this.label = label;
     }
     
-    public GraphNode(int val, List<GraphNode> neighbors) {
-        this.val = val;
+    public GraphNode(int label, List<GraphNode> neighbors) {
+        this.label = label;
         this.neighbors = neighbors;
     }
 
     public String toString() {
         StringBuilder str = new StringBuilder();
-        str.append("val=").append(this.val);
+        str.append("label=").append(this.label);
         str.append(", neighbors=");
         Iterator<GraphNode> iter = this.neighbors.iterator();
         while (iter.hasNext()) {
-            str.append(iter.next().val).append(" ");
+            str.append(iter.next().label).append(" ");
         }
         return str.toString();
     }
@@ -44,59 +44,69 @@ public class CloneGraph {
         GraphNode node3 = new GraphNode(3);
         GraphNode node4 = new GraphNode(4);
 
-        List<GraphNode> list = new ArrayList<GraphNode>();
-        list.add(node2);
-        list.add(node4);
-        node1.neighbors = list;
+        node1.neighbors.add(node2);
+        node1.neighbors.add(node4);
 
-        list = new ArrayList<GraphNode>();
-        list.add(node1);
-        list.add(node3);
-        node2.neighbors = list;
+        node2.neighbors.add(node1);
+        node2.neighbors.add(node3);
 
-        list = new ArrayList<GraphNode>();
-        list.add(node2);
-        list.add(node4);
-        node3.neighbors = list;
+        node3.neighbors.add(node2);
+        node3.neighbors.add(node3);
 
-        list = new ArrayList<GraphNode>();
-        list.add(node3);
-        list.add(node1);
-        node4.neighbors = list;
+        node4.neighbors.add(node3);
+        node4.neighbors.add(node1);
+
         return node1;
     }
 
-    // DFS
-    public HashMap<GraphNode, GraphNode> map = new HashMap<>();
-    public GraphNode sol1(GraphNode node) {
-        map.put(node, new GraphNode(node.val, new ArrayList<>()));
 
-        for (GraphNode neighbor : node.neighbors) {
-            if (map.containsKey(neighbor)) {
-                map.get(node).neighbors.add(map.get(neighbor));
-            } else {
-                map.get(node).neighbors.add(sol1(neighbor));
-            }
+    // DFS
+    public GraphNode sol1(GraphNode node) {
+        if (node == null) {
+            return null;
         }
-        return map.get(node);
+        
+        // copy 된 map을 저장하여 무한히 동작하지 않도록 한다.
+        Map<GraphNode, GraphNode> map = new HashMap<>();
+        return DFS(node, map);
     }
+
+    private GraphNode DFS(GraphNode node, Map<GraphNode, GraphNode> map) {
+        if (map.containsKey(node)) {
+            return map.get(node);
+        }
+
+        GraphNode copy = new GraphNode(node.label);
+        map.put(node, copy);
+        for (GraphNode neighbor : node.neighbors) {
+            copy.neighbors.add(DFS(neighbor, map));
+        }
+        System.out.println("DFS=" +copy);
+        return copy;
+    }
+
 
     // BFS
     public GraphNode sol2(GraphNode node) {
+
+        // copy할 key로 저장하고 copy한 value를 return 한다.
         Map<GraphNode, GraphNode> map = new HashMap<>();
         Queue<GraphNode> queue = new ArrayDeque<>();
 
+        // add node retrun true/false
         queue.offer(node);
-        map.put(node, new GraphNode(node.val, new ArrayList<>()));
-        while (!queue.isEmpty()) {
-            GraphNode h = queue.poll();
+        map.put(node, new GraphNode(node.label));
 
-            for (GraphNode neighbor : h.neighbors) {
+        while (!queue.isEmpty()) {
+            // The method returns head element and also removes it
+            GraphNode head = queue.poll();
+
+            for (GraphNode neighbor : head.neighbors) {
                 if (!map.containsKey(neighbor)) {
-                    map.put(neighbor, new GraphNode(neighbor.val, new ArrayList<>()));
+                    map.put(neighbor, new GraphNode(neighbor.label));
                     queue.offer(neighbor);
                 }
-                map.get(h).neighbors.add(map.get(neighbor));
+                map.get(head).neighbors.add(map.get(neighbor));
             }
         }
 
@@ -108,8 +118,8 @@ public class CloneGraph {
 
         GraphNode node = t.buildGraph();
 
-        System.out.println(t.sol1(node));
-        //System.out.println(t.sol2(node));
+        //System.out.println(t.sol1(node));
+        System.out.println(t.sol2(node));
     }
 
 }

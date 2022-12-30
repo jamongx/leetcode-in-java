@@ -22,13 +22,13 @@ public class CombinationSum {
 
         System.out.println(curr);
 
-        // 종료조건 1
+        // 종료조건 1: target과 딱 맞아 떨어지는 경우에
         if (target == 0) {
             List<Integer> one = new ArrayList<>(curr);
             result.add(one);
             System.out.println("add result=" +one);
         } 
-        // 종료조건 2
+        // 종료조건 2: target 보다 더 큰수가 되거나 끝에 다달았을때
         else if (target < 0 || currIndex == candidates.length) {
 
         } 

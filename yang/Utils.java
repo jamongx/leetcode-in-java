@@ -12,4 +12,14 @@ public class Utils {
             System.out.println();
         }
     }
+
+    public static void printList(ListNode n) {
+        System.out.println("------");
+        while (n != null) {
+            System.out.print(n.val);
+            n = n.next;
+        }
+        System.out.println();
+    }
+
 }

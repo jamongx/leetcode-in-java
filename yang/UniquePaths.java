@@ -43,7 +43,7 @@ public class UniquePaths {
         }
 
         // top row
-        System.out.println("right ------------------");
+        // System.out.println("right ------------------");
         for (int j = 0; j < n; j++) {
             dp[0][j] = 1;
             System.out.println("right ------------------");

@@ -10,7 +10,7 @@ public class DecodeWays {
         System.out.println("input = " + s);
         // A -> "1" ~ Z -> "26"
         // dp[i]는알파벳 조합의 개수를 저장한다.
-        // dp[length+1]에는 최종값이 더해진다.
+        // dp[length+1]에는 최종값이 저장된다.
         int[] dp = new int[s.length() + 1];
 
         dp[0] = 1; // 첫번째 한자리 조합이 1이 나온다.
@@ -70,12 +70,47 @@ public class DecodeWays {
         return dp[s.length()];
     }
 
+    public int sol2(String input) {
+        // 문자열의 길이가 0 또는 첫번째 문자가 0
+        if (input.length() == 1 || input.charAt(0) == '0') {
+            return 0;
+        }
+
+        // input[0]
+        int prev = 1; // input[1]을 계산할때 필요한 prev(input[0] 한자리 숫자 조합) 값이다.
+        int curr = 1; // input[0] 한자리로 만들수 있는 조합수
+        // int result = prev;
+        int result = curr; // input[0] 한자리로 만들수 있는 조합수 (curr와 같다)
+
+        for (int i = 1; i < input.length(); i++) {
+
+            // i 문자가 0인데 i-1 문자가 1과 2가 아니면 return
+            if (input.charAt(i) == '0' && input.charAt(i - 1) != '1' && input.charAt(i - 1) != '2') {
+                return 0;
+            }
+
+            // i 문자가 0 이면
+            if (input.charAt(i) == '0') {
+                result = prev;
+            }
+            // (i-1)X10 + (i) < 27 이고 i-1이 '0'이 아니면
+            else if ((input.charAt(i - 1) - '0') * 10 + (input.charAt(i) - '0') < 27 && input.charAt(i - 1) != '0') {
+                result = prev + curr;
+            }
+
+            prev = curr;
+            curr = result;
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         DecodeWays t = new DecodeWays();
 
-        String one = "1111";
+        String one = "12123";
 
         System.out.println(t.sol1(one));
+        System.out.println(t.sol2(one));
     }    
 
 }
