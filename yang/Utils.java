@@ -1,3 +1,6 @@
+import java.util.HashSet;
+import java.util.Set;
+
 public class Utils {
 
     public static void print2Darray(int[][] array) {
@@ -20,6 +23,25 @@ public class Utils {
             n = n.next;
         }
         System.out.println();
+    }
+    
+    public static void printUGraph(UndirectedGraphNode node) {
+        System.out.println("------");
+        
+        Set<UndirectedGraphNode> set = new HashSet<>();
+        DFS(node, set);
+    }
+
+    private static void DFS(UndirectedGraphNode node, Set<UndirectedGraphNode> set) {
+        if (set.contains(node)) {
+             return;
+        }
+
+        set.add(node);
+        System.out.println(node);
+        for (UndirectedGraphNode neighbor : node.neighbors) {
+            DFS(neighbor, set);
+        }
     }
 
 }

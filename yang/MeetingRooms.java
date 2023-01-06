@@ -1,30 +1,31 @@
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class MeetingRooms {
-   
-    public boolean canAttendMeetings(Interval[] intervals) {
-        Arrays.sort(intervals, new Comparator<Interval>() {
-            public int compare(Interval a, Interval b) {
-                return a.start - b.start;
-            }
-        });
-        for (int i = 0; i < intervals.length - 1; i++) {
-            if (intervals[i].end > intervals[i + 1].start) {
+
+    public boolean sol1(List<Interval> intvList) {
+        Collections.sort(intvList, Comparator.comparing((Interval itl) -> itl.start));
+
+        for (int i = 0; i < intvList.size() - 1; i++) {
+            if (intvList.get(i).end > intvList.get(i+1).start) {
                 return false;
             }
         }
         return true;
     }
 
-    public boolean canAttendMeetings(int[][] intervals) {
-        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
+    public static void main(String[] args) {
+        MeetingRooms t = new MeetingRooms();
 
-        for (int i = 1; i < intervals.length; ++i)
-            if (intervals[i - 1][1] > intervals[i][0])
-                return false;
+        List<Interval> intervals = new ArrayList<>();
+        //intervals.add(new Interval(7,10));
+        //intervals.add(new Interval(2,4));
+        intervals.add(new Interval(0,30));
+        intervals.add(new Interval(5,10));
+        intervals.add(new Interval(15,20));
 
-        return true;
+        System.out.println(t.sol1(intervals));
     }
-
 }

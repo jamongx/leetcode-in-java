@@ -13,6 +13,12 @@ public class RotateImage {
         }
     }
 
+    /*
+     * https://walkccc.me/LeetCode/problems/0048/ 
+     * Approach 1: Reverse
+     * Time: O(n^2)
+     * Space: O(1)
+     */
     public void sol2(int[][] matrix) {
         for (int i = 0, j = matrix.length - 1; i < j; ++i, --j) {
             int[] temp = matrix[i];
@@ -20,14 +26,21 @@ public class RotateImage {
             matrix[j] = temp;
         }
 
-        for (int i = 0; i < matrix.length; ++i)
+        for (int i = 0; i < matrix.length; ++i) {
             for (int j = i + 1; j < matrix.length; ++j) {
                 final int temp = matrix[i][j];
                 matrix[i][j] = matrix[j][i];
                 matrix[j][i] = temp;
             }
+        }
     }
 
+   /*
+    * https://walkccc.me/LeetCode/problems/0048/
+    * Approach 2: Indexing
+    * Time: O(n^2)
+    * Space: O(1)
+    */
     public void sol3(int[][] matrix) {
         for (int min = 0; min < matrix.length / 2; ++min) {
             final int max = matrix.length - min - 1;

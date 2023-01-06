@@ -7,7 +7,11 @@ import java.util.Queue;
 
 public class PacificAtlanticWaterFlow {
 
-    // dfs
+    /**
+     * DFS
+     * @param heights
+     * @return
+     */
     public List<List<Integer>> sol1(int[][] heights) {
 
         final int m = heights.length;
@@ -26,7 +30,7 @@ public class PacificAtlanticWaterFlow {
             dfs(heights, m - 1, j, 0, seenA);
         }
         
-        // 배열이 아니라 리스트를 저장한다.
+        // seenP와 seenA가 모두 true이면 list에 저장하여 return한다.
         List<List<Integer>> ans = new ArrayList<>();
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
@@ -38,7 +42,7 @@ public class PacificAtlanticWaterFlow {
         return ans;
     }
 
-    private void dfs(final int[][] heights, int i, int j, int h, boolean[][] seen) {
+    private void dfs(int[][] heights, int i, int j, int h, boolean[][] seen) {
         if (i < 0 || i == heights.length || j < 0 || j == heights[0].length) {
             return;
         }
@@ -55,12 +59,19 @@ public class PacificAtlanticWaterFlow {
     }
 
 
-    // bfs
+    /**
+     * BFS
+     * @param heights
+     * @return
+     */
     public List<List<Integer>> sol2(int[][] heights) {
+
         final int m = heights.length;
         final int n = heights[0].length;
+
         Queue<int[]> qP = new ArrayDeque<>();
         Queue<int[]> qA = new ArrayDeque<>();
+
         boolean[][] seenP = new boolean[m][n];
         boolean[][] seenA = new boolean[m][n];
         
@@ -125,13 +136,14 @@ public class PacificAtlanticWaterFlow {
 
         PacificAtlanticWaterFlow t = new PacificAtlanticWaterFlow();
 
-        int[][] mat = { { 1, 2, 2, 3, 5 },
-                        { 3, 2, 3, 4, 4 },
-                        { 2, 4, 5, 3, 1 },
-                        { 6, 7, 1, 4, 5 },
-                        { 5, 1, 1, 2, 4 } };
+        int[][] heights = { { 1, 2, 2, 3, 5 },
+                            { 3, 2, 3, 4, 4 },
+                            { 2, 4, 5, 3, 1 },
+                            { 6, 7, 1, 4, 5 },
+                            { 5, 1, 1, 2, 4 } };
         
-        List<List<Integer>> res = t.sol1(mat);
+        List<List<Integer>> res = t.sol1(heights);
+
         Iterator<List<Integer>> iter = res.iterator();
         while(iter.hasNext()) {
             System.out.println(iter.next());

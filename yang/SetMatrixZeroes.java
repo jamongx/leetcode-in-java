@@ -1,21 +1,25 @@
 public class SetMatrixZeroes {
 
-    public void setZeroes1(int[][] matrix) {
+    public void sol1(int[][] matrix) {
+        
         boolean firstRowZero = false;
         boolean firstColumnZero = false;
-        // set first row and column zero or not
+        
+        // 먼저 first column과 first row이 0을 포함하고 있는지 확인한다.
         for (int i = 0; i < matrix.length; i++) {
             if (matrix[i][0] == 0) {
                 firstColumnZero = true;
                 break;
             }
         }
+        
         for (int i = 0; i < matrix[0].length; i++) {
             if (matrix[0][i] == 0) {
                 firstRowZero = true;
                 break;
             }
         }
+
         // mark zeros on first row and column
         for (int i = 1; i < matrix.length; i++) {
             for (int j = 1; j < matrix[0].length; j++) {
@@ -25,6 +29,7 @@ public class SetMatrixZeroes {
                 }
             }
         }
+
         // use mark to set elements
         for (int i = 1; i < matrix.length; i++) {
             for (int j = 1; j < matrix[0].length; j++) {
@@ -33,60 +38,21 @@ public class SetMatrixZeroes {
                 }
             }
         }
-        // set first column and row
+
+        // 마지막 단계에서 first column과 first row가 0을 포함하고 있다면
+        // first column과 first row를 0으로 설정해준다.
+        // 안그러면 결과적으로 전부 0이 될수도 있다.
         if (firstColumnZero) {
-            for (int i = 0; i < matrix.length; i++)
+            for (int i = 0; i < matrix.length; i++) {
                 matrix[i][0] = 0;
+            }
         }
+
         if (firstRowZero) {
-            for (int i = 0; i < matrix[0].length; i++)
+            for (int i = 0; i < matrix[0].length; i++) {
                 matrix[0][i] = 0;
+            }
         }
     }
 
-
-    ///////////////////////////////////////////////////////////////////
-    
-    public void setZeroes2(int[][] matrix) {
-        final int m = matrix.length;
-        final int n = matrix[0].length;
-        boolean shouldFillFirstRow = false;
-        boolean shouldFillFirstCol = false;
-
-        for (int j = 0; j < n; ++j)
-            if (matrix[0][j] == 0) {
-                shouldFillFirstRow = true;
-                break;
-            }
-
-        for (int i = 0; i < m; ++i)
-            if (matrix[i][0] == 0) {
-                shouldFillFirstCol = true;
-                break;
-            }
-
-        // Store the information in the 1st row/col
-        for (int i = 1; i < m; ++i)
-            for (int j = 1; j < n; ++j)
-                if (matrix[i][j] == 0) {
-                    matrix[i][0] = 0;
-                    matrix[0][j] = 0;
-                }
-
-        // Fill 0s for the matrix except the 1st row/col
-        for (int i = 1; i < m; ++i)
-            for (int j = 1; j < n; ++j)
-                if (matrix[i][0] == 0 || matrix[0][j] == 0)
-                    matrix[i][j] = 0;
-
-        // Fill 0s for the 1st row if needed
-        if (shouldFillFirstRow)
-            for (int j = 0; j < n; ++j)
-                matrix[0][j] = 0;
-
-        // Fill 0s for the 1st col if needed
-        if (shouldFillFirstCol)
-            for (int i = 0; i < m; ++i)
-                matrix[i][0] = 0;
-    }
 }

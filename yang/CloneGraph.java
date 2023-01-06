@@ -1,48 +1,89 @@
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Queue;
-// UndirectedGraphNode
-class GraphNode {
-    public int label;
-    public List<GraphNode> neighbors = new ArrayList<GraphNode>();
-    
-    public GraphNode(int label) {
-        this.label = label;
-    }
-    
-    public GraphNode(int label, List<GraphNode> neighbors) {
-        this.label = label;
-        this.neighbors = neighbors;
-    }
-
-    public String toString() {
-        StringBuilder str = new StringBuilder();
-        str.append("label=").append(this.label);
-        str.append(", neighbors=");
-        Iterator<GraphNode> iter = this.neighbors.iterator();
-        while (iter.hasNext()) {
-            str.append(iter.next().label).append(" ");
-        }
-        return str.toString();
-    }
-}
+import java.util.ArrayDeque;
 
 public class CloneGraph {
+
+    // DFS
+    public UndirectedGraphNode sol1(UndirectedGraphNode node) {
+        if (node == null) {
+            return null;
+        }
+        
+        // copy 된 node을 저장하여 무한 loop를 막는다.
+        Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
+        // dfs로 복사된 node를 return한다.
+        return DFS(node, map);
+    }
+
+    private UndirectedGraphNode DFS(UndirectedGraphNode node, Map<UndirectedGraphNode, UndirectedGraphNode> map) {
+        if (map.containsKey(node)) {
+            return map.get(node);
+        }
+
+        UndirectedGraphNode copy1 = new UndirectedGraphNode(node.label);
+        map.put(node, copy1);
+        for (UndirectedGraphNode neighbor : node.neighbors) {
+            copy1.neighbors.add(DFS(neighbor, map));
+        }
+        System.out.println("DFS=" +copy1);
+        return copy1;
+    }
+
+
+    // BFS
+    public UndirectedGraphNode sol2(UndirectedGraphNode node) {
+        if (node == null) {
+            return null;
+        }
+
+        Queue<UndirectedGraphNode> queue = new ArrayDeque<>();
+
+        // original node를 key로 저장하고 copy한 node value로 넣어서
+        // 마지막에 input(node)의 value값을 return 한다.
+        Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
+
+        // add node return true/false
+        queue.offer(node);
+        System.out.println("que] add node=" +node);
+
+        UndirectedGraphNode copy1 = new UndirectedGraphNode(node.label);
+        map.put(node, copy1);
+        System.out.println("map] put  key=" +node +", copy1=" +copy1);
+
+        while (!queue.isEmpty()) {
+
+            // The method returns head element and also removes it
+            UndirectedGraphNode head = queue.poll();
+            System.out.println("que] get head=" +head);
+
+            for (UndirectedGraphNode neighbor : head.neighbors) {
+
+                if (!map.containsKey(neighbor)) {
+                    queue.offer(neighbor);
+                    System.out.println("que] add node=" +node);
+                    UndirectedGraphNode copy2 = new UndirectedGraphNode(neighbor.label);
+                    map.put(neighbor, copy2);
+                    System.out.println("map] put  key=" +node +", copy2=" +copy2);
+                }
+                map.get(head).neighbors.add(map.get(neighbor));
+            }
+        }
+
+        return map.get(node);
+    }
 
     /* Build the desired graph
      Note : All the edges are Undirected Given Graph:
       1--2
       |  |
       4--3 */
-    public GraphNode buildGraph() {
-        GraphNode node1 = new GraphNode(1);
-        GraphNode node2 = new GraphNode(2);
-        GraphNode node3 = new GraphNode(3);
-        GraphNode node4 = new GraphNode(4);
+    public UndirectedGraphNode buildGraph() {
+        UndirectedGraphNode node1 = new UndirectedGraphNode(1);
+        UndirectedGraphNode node2 = new UndirectedGraphNode(2);
+        UndirectedGraphNode node3 = new UndirectedGraphNode(3);
+        UndirectedGraphNode node4 = new UndirectedGraphNode(4);
 
         node1.neighbors.add(node2);
         node1.neighbors.add(node4);
@@ -60,66 +101,18 @@ public class CloneGraph {
     }
 
 
-    // DFS
-    public GraphNode sol1(GraphNode node) {
-        if (node == null) {
-            return null;
-        }
-        
-        // copy 된 map을 저장하여 무한히 동작하지 않도록 한다.
-        Map<GraphNode, GraphNode> map = new HashMap<>();
-        return DFS(node, map);
-    }
-
-    private GraphNode DFS(GraphNode node, Map<GraphNode, GraphNode> map) {
-        if (map.containsKey(node)) {
-            return map.get(node);
-        }
-
-        GraphNode copy = new GraphNode(node.label);
-        map.put(node, copy);
-        for (GraphNode neighbor : node.neighbors) {
-            copy.neighbors.add(DFS(neighbor, map));
-        }
-        System.out.println("DFS=" +copy);
-        return copy;
-    }
-
-
-    // BFS
-    public GraphNode sol2(GraphNode node) {
-
-        // copy할 key로 저장하고 copy한 value를 return 한다.
-        Map<GraphNode, GraphNode> map = new HashMap<>();
-        Queue<GraphNode> queue = new ArrayDeque<>();
-
-        // add node retrun true/false
-        queue.offer(node);
-        map.put(node, new GraphNode(node.label));
-
-        while (!queue.isEmpty()) {
-            // The method returns head element and also removes it
-            GraphNode head = queue.poll();
-
-            for (GraphNode neighbor : head.neighbors) {
-                if (!map.containsKey(neighbor)) {
-                    map.put(neighbor, new GraphNode(neighbor.label));
-                    queue.offer(neighbor);
-                }
-                map.get(head).neighbors.add(map.get(neighbor));
-            }
-        }
-
-        return map.get(node);
-    }
 
     public static void main(String[] args) {
         CloneGraph t = new CloneGraph();
 
-        GraphNode node = t.buildGraph();
+        UndirectedGraphNode node = t.buildGraph();
+        System.out.println("Built graph=");
+        Utils.printUGraph(node);
 
-        //System.out.println(t.sol1(node));
-        System.out.println(t.sol2(node));
+        //System.out.println("Sol1=");
+        //Utils.printUGraph(t.sol1(node));
+        System.out.println("Sol2=");
+        Utils.printUGraph(t.sol2(node));
     }
 
 }
