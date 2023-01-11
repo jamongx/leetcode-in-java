@@ -109,9 +109,7 @@ public class CloneGraph {
         System.out.println("Built graph=");
         Utils.printUGraph(node);
 
-        //System.out.println("Sol1=");
         //Utils.printUGraph(t.sol1(node));
-        System.out.println("Sol2=");
         Utils.printUGraph(t.sol2(node));
     }
 

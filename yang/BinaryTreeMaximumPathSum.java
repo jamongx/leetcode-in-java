@@ -8,11 +8,17 @@ public class BinaryTreeMaximumPathSum {
     }
 
     public int calculateSum(TreeNode root, int[] max) {
-        if (root == null)
+        if (root == null) {
             return 0;
-        int left = calculateSum(root.left, max);
+        }
+
+        int left  = calculateSum(root.left,  max);
         int right = calculateSum(root.right, max);
-        int current = Math.max(root.val, Math.max(root.val + left, root.val + right));
+
+        int root_left_or_right = Math.max(root.val + left, root.val + right);
+
+        int current = Math.max(root.val, root_left_or_right);
+
         max[0] = Math.max(max[0], Math.max(current, left + root.val + right));
         return current;
     }
@@ -26,12 +32,15 @@ public class BinaryTreeMaximumPathSum {
 
     // root->val + 0/1 of its subtrees
     private int maxPathSumDownFrom(TreeNode root) {
-        if (root == null)
+        if (root == null) {
             return 0;
+        }
 
-        final int l = Math.max(maxPathSumDownFrom(root.left), 0);
-        final int r = Math.max(maxPathSumDownFrom(root.right), 0);
-        ans = Math.max(ans, root.val + l + r);
-        return root.val + Math.max(l, r);
+        int left  = Math.max(maxPathSumDownFrom(root.left),  0);
+        int right = Math.max(maxPathSumDownFrom(root.right), 0);
+
+        ans = Math.max(ans, root.val + left + right);
+
+        return root.val + Math.max(left, right);
     }
 }

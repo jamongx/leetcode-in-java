@@ -3,19 +3,16 @@ import java.util.LinkedList;
 public class InvertBinaryTree {
 
     public TreeNode sol1(TreeNode root) {
-        helper(root);
-        return root;
-    }
-
-    public void helper(TreeNode n) {
-        if (n == null) {
-            return;
+        if (root == null) {
+            return null;
         }
-        TreeNode t = n.left;
-        n.left = n.right;
-        n.right = t;
-        helper(n.left);
-        helper(n.right);
+
+        TreeNode left  = root.left;
+        TreeNode right = root.right;
+
+        root.left  = sol1(right);
+        root.right = sol1(left);
+        return root;
     }
 
     public TreeNode sol2(TreeNode root) {
@@ -30,18 +27,23 @@ public class InvertBinaryTree {
         return root;
     }
 
-
     public TreeNode sol3(TreeNode root) {
-        LinkedList<TreeNode> queue = new LinkedList<TreeNode>();
+        LinkedList<TreeNode> queue = new LinkedList<>();
         if (root != null) {
             queue.add(root);
         }
+
         while (!queue.isEmpty()) {
+
             TreeNode p = queue.poll();
-            if (p.left != null)
+            if (p.left != null) {
                 queue.add(p.left);
-            if (p.right != null)
+            }
+
+            if (p.right != null) {
                 queue.add(p.right);
+            }
+
             TreeNode temp = p.left;
             p.left = p.right;
             p.right = temp;
@@ -49,4 +51,22 @@ public class InvertBinaryTree {
         return root;
     }
 
+    public static void main(String[] args) {
+
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.right.left = new TreeNode(5);
+        root.right.right = new TreeNode(6);
+        root.right.right.left = new TreeNode(8);
+        root.right.left.right = new TreeNode(7);
+
+        System.out.println("Invert Binary tree before: ");
+        Utils.printBinaryTree(root);
+
+        InvertBinaryTree t = new InvertBinaryTree();
+        System.out.println("Invert Binary tree after: ");
+        Utils.printBinaryTree(t.sol1(root));
+    }
 }

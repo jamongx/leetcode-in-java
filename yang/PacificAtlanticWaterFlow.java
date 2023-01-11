@@ -66,15 +66,15 @@ public class PacificAtlanticWaterFlow {
      */
     public List<List<Integer>> sol2(int[][] heights) {
 
-        final int m = heights.length;
-        final int n = heights[0].length;
-
-        Queue<int[]> qP = new ArrayDeque<>();
-        Queue<int[]> qA = new ArrayDeque<>();
+        int m = heights.length;
+        int n = heights[0].length;
 
         boolean[][] seenP = new boolean[m][n];
         boolean[][] seenA = new boolean[m][n];
         
+        Queue<int[]> qP = new ArrayDeque<>();
+        Queue<int[]> qA = new ArrayDeque<>();
+
         for (int i = 0; i < m; ++i) {
             qP.offer(new int[] { i, 0 });
             qA.offer(new int[] { i, n - 1 });

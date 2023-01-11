@@ -61,8 +61,8 @@ public class JumpGame {
     public static void main(String[] args) {
         JumpGame t = new JumpGame();
 
-        int[] nums = { 2, 3, 1, 1, 4 };
-        // int[] nums = { 3, 2, 1, 0, 4 };
+        //int[] nums = { 2, 3, 1, 1, 4 };
+        int[] nums = { 3, 2, 1, 0, 4 };
 
         // System.out.println(t.sol1(nums));
         System.out.println(t.sol1(nums));

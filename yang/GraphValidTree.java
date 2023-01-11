@@ -14,7 +14,6 @@ import java.util.LinkedList;
  */
 public class GraphValidTree {
 
-
     /**
      * 
      * @param n: The number of nodes

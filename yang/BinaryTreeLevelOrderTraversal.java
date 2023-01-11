@@ -7,14 +7,60 @@ import java.util.Queue;
 
 public class BinaryTreeLevelOrderTraversal {
 
-    public ArrayList<ArrayList<Integer>> sol1(TreeNode root) {
+    public List<List<Integer>> sol1(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+
+        List<List<Integer>> ans = new ArrayList<>();
+
+        // 연결되어 있으니 root 하나만 넣어도 된다.
+        Queue<TreeNode> queue = new ArrayDeque<>(Arrays.asList(root));
+
+        while (!queue.isEmpty()) {
+
+            System.out.println("while queue.size()=" +queue.size());
+
+            List<Integer> currLevel = new ArrayList<>();
+
+            // int i = queue.size()는 초기값이 한번 설정되면
+            // loop가 끝날때까지 값이 변경되지 않는다.
+            for (int i = queue.size(); i > 0; i--) {
+                System.out.println("for queue.size()=" +queue.size());
+
+                TreeNode node = queue.poll();
+
+                System.out.println("poll queue.size()=" +queue.size());
+                currLevel.add(node.val);
+
+                if (node.left != null) {
+                    queue.offer(node.left);
+                    System.out.println("add left queue.size()=" +queue.size());
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                    System.out.println("add right queue.size()=" +queue.size());
+                }
+            }
+            ans.add(currLevel);
+        }
+        return ans;
+    }
+
+
+
+    public ArrayList<ArrayList<Integer>> sol2(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+
+
         ArrayList<ArrayList<Integer>> al = new ArrayList<ArrayList<Integer>>();
         ArrayList<Integer> nodeValues = new ArrayList<Integer>();
-        if (root == null)
-            return al;
         LinkedList<TreeNode> current = new LinkedList<TreeNode>();
         LinkedList<TreeNode> next = new LinkedList<TreeNode>();
         current.add(root);
+
         while (!current.isEmpty()) {
             TreeNode node = current.remove();
             if (node.left != null)
@@ -32,11 +78,12 @@ public class BinaryTreeLevelOrderTraversal {
         return al;
     }
 
-    public List<List<Integer>> sol2(TreeNode root) {
-        List<List<Integer>> result = new ArrayList<>();
+    public List<List<Integer>> sol3(TreeNode root) {
         if (root == null) {
-            return result;
+            return new ArrayList<>();
         }
+
+        List<List<Integer>> result = new ArrayList<>();
         LinkedList<TreeNode> nodeQueue = new LinkedList<>();
         LinkedList<Integer> levelQueue = new LinkedList<>();
         nodeQueue.offer(root);
@@ -64,27 +111,20 @@ public class BinaryTreeLevelOrderTraversal {
         return result;
     }
 
+    public static void main(String[] args) {
 
-    public List<List<Integer>> sol3(TreeNode root) {
-        if (root == null)
-            return new ArrayList<>();
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.right.left = new TreeNode(5);
+        root.right.right = new TreeNode(6);
+        root.right.right.left = new TreeNode(8);
+        root.right.left.right = new TreeNode(7);
 
-        List<List<Integer>> ans = new ArrayList<>();
-        Queue<TreeNode> q = new ArrayDeque<>(Arrays.asList(root));
+        BinaryTreeLevelOrderTraversal t = new BinaryTreeLevelOrderTraversal();
 
-        while (!q.isEmpty()) {
-            List<Integer> currLevel = new ArrayList<>();
-            for (int sz = q.size(); sz > 0; --sz) {
-                TreeNode node = q.poll();
-                currLevel.add(node.val);
-                if (node.left != null)
-                    q.offer(node.left);
-                if (node.right != null)
-                    q.offer(node.right);
-            }
-            ans.add(currLevel);
-        }
-
-        return ans;
+        System.out.println(t.sol1(root));
     }
+
 }

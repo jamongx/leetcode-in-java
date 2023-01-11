@@ -44,4 +44,13 @@ public class Utils {
         }
     }
 
+    public static void printBinaryTree(TreeNode root) {
+        if (root != null) {
+            System.out.println(root.val);
+            printBinaryTree(root.left);
+            printBinaryTree(root.right);
+        }
+    }
+
+
 }

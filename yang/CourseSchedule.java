@@ -8,11 +8,12 @@ public class CourseSchedule {
 
     /**
      * DFS
+     * For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
+     * [1, 2], [1, 3], [2, 4] ...
+     * 1. prerequisites[n][1]=2 -> 선수과목
+     * 2. prerequisites[n][0]=1 -> 선택과목
      * @param numCourses
      * @param prerequisites
-     * [1, 2], [1, 3], [2, 4] ...
-     * 1. prerequisites[n][0]=1 -> 선수과목
-     * 2. prerequisites[n][1]=2 -> 선택과목
      * @return
      */
     public boolean sol1(int numCourses, int[][] prerequisites) {
@@ -38,6 +39,7 @@ public class CourseSchedule {
         }
 
         // 각 과목(visit)중에서 cyclic이 있는지 확인한다.
+        // 초기값은 0, cyclic -1, acyclic -> 1
         int[] visit = new int[numCourses];
 
         for (int i = 0; i < numCourses; i++) {
@@ -72,9 +74,11 @@ public class CourseSchedule {
         visit[i] = -1;
 
         // 선수과목이 map에 포함되어 있다면
+        // i->key -> 자료구조
         if (map.containsKey(i)) {
             
             // 선수과목에 연결된 과목 리스트를 loop
+            // map.get(i) -> value -> 파일처리 ,알고리즘
             for (int j : map.get(i)) {
                 
                 if (!canFinishDFS(map, visit, j)) {

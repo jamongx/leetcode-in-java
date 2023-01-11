@@ -1,66 +1,72 @@
-import java.util.HashMap;
 import java.util.Map;
 
-class TrieNode {
-    char c;
-    HashMap<Character, TrieNode> children = new HashMap<Character, TrieNode>();
-    boolean isLeaf;
+public class WordDictionary {
 
-    public TrieNode() {
+    private TrieNode root = new TrieNode();
+
+    public WordDictionary() {
     }
 
-    public TrieNode(char c) {
-        this.c = c;
-    }
-}
-
-public class WordDictionary1 {
-
-
-    private TrieNode root;
-
-    public WordDictionary1() {
-        root = new TrieNode();
-    }
-
-    // Adds a word into the data structure.
+    /**
+     * Adds a word into the data structure
+     * @param word
+     */
     public void addWord(String word) {
-        HashMap<Character, TrieNode> children = root.children;
+
+        Map<Character, TrieNode> children = root.children;
+
         for (int i = 0; i < word.length(); i++) {
+
             char c = word.charAt(i);
-            TrieNode t = null;
+
+            TrieNode trie = null;
             if (children.containsKey(c)) {
-                t = children.get(c);
-            } else {
-                t = new TrieNode(c);
-                children.put(c, t);
+                trie = children.get(c);
             }
-            children = t.children;
+            else {
+                trie = new TrieNode(c);
+                children.put(c, trie);
+            }
+
+            children = trie.children;
+
             if (i == word.length() - 1) {
-                t.isLeaf = true;
+                trie.isLeaf = true;
             }
         }
     }
 
-    // Returns if the word is in the data structure. A word could
-    // contain the dot character '.' to represent any one letter.
+
+    /**
+     * Returns if the word is in the data structure. A word could
+     * contain the dot character '.' to represent any one letter
+     * @param word
+     * @return
+     */
     public boolean search(String word) {
         return dfsSearch(root.children, word, 0);
     }
 
-    public boolean dfsSearch(HashMap<Character, TrieNode> children, String word, int start) {
+    // 이해는 되지만
+    // '.'부분은 코드를 좀더 세련되게 다음을 수 있을거 같다.
+    public boolean dfsSearch(Map<Character, TrieNode> children, String word, int start) {
+
         if (start == word.length()) {
-            if (children.size() == 0)
+            if (children.size() == 0) {
                 return true;
-            else
+            } else {
                 return false;
+            }
         }
+
         char c = word.charAt(start);
         if (children.containsKey(c)) {
+
             if (start == word.length() - 1 && children.get(c).isLeaf) {
                 return true;
             }
             return dfsSearch(children.get(c).children, word, start + 1);
+
         } else if (c == '.') {
             boolean result = false;
             for (Map.Entry<Character, TrieNode> child : children.entrySet()) {
@@ -77,4 +83,5 @@ public class WordDictionary1 {
             return false;
         }
     }
+
 }
