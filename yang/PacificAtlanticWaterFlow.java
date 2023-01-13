@@ -1,13 +1,13 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 
 public class PacificAtlanticWaterFlow {
 
     /**
+     * https://walkccc.me/LeetCode/problems/0417/ 
      * DFS
      * @param heights
      * @return
@@ -52,14 +52,24 @@ public class PacificAtlanticWaterFlow {
         }
 
         seen[i][j] = true;
-        dfs(heights, i + 1, j, heights[i][j], seen);// east
-        dfs(heights, i - 1, j, heights[i][j], seen);// west
-        dfs(heights, i, j + 1, heights[i][j], seen);// south
-        dfs(heights, i, j - 1, heights[i][j], seen);// north
+        dfs(heights, i + 1, j, heights[i][j], seen); // east
+        dfs(heights, i - 1, j, heights[i][j], seen); // west
+        dfs(heights, i, j + 1, heights[i][j], seen); // south
+        dfs(heights, i, j - 1, heights[i][j], seen); // north
     }
 
 
+    class Cell {
+        int i;
+        int j;
+        Cell (int i, int j) {
+            this.i = i;
+            this.j = j;
+        }
+    }
+
     /**
+     * https://walkccc.me/LeetCode/problems/0417/ 
      * BFS
      * @param heights
      * @return
@@ -72,19 +82,19 @@ public class PacificAtlanticWaterFlow {
         boolean[][] seenP = new boolean[m][n];
         boolean[][] seenA = new boolean[m][n];
         
-        Queue<int[]> qP = new ArrayDeque<>();
-        Queue<int[]> qA = new ArrayDeque<>();
+        Queue<Cell> qP = new ArrayDeque<>();
+        Queue<Cell> qA = new ArrayDeque<>();
 
         for (int i = 0; i < m; ++i) {
-            qP.offer(new int[] { i, 0 });
-            qA.offer(new int[] { i, n - 1 });
+            qP.offer(new Cell(i, 0));
+            qA.offer(new Cell(i, n - 1));
             seenP[i][0] = true;
             seenA[i][n - 1] = true;
         }
         
         for (int j = 0; j < n; ++j) {
-            qP.offer(new int[] { 0, j });
-            qA.offer(new int[] { m - 1, j });
+            qP.offer(new Cell(0, j));
+            qA.offer(new Cell(m - 1, j));
             seenP[0][j] = true;
             seenA[m - 1][j] = true;
         }
@@ -93,6 +103,7 @@ public class PacificAtlanticWaterFlow {
         bfs(heights, qA, seenA);
         
         List<List<Integer>> ans = new ArrayList<>();
+        // 전제 지도 (matrix)의 cell을 돌면서
         for (int i = 0; i < m; ++i) {
             for (int j = 0; j < n; ++j) {
                 if (seenP[i][j] && seenA[i][j]) {
@@ -104,28 +115,34 @@ public class PacificAtlanticWaterFlow {
         return ans;
     }
 
-    private static final int[] dirs = { 0, 1, 0, -1, 0 };
+    // directions
+    private static int[] dirs = { 0, 1, 0, -1, 0 };
 
-    private void bfs(int[][] heights, Queue<int[]> q, boolean[][] seen) {
+    private void bfs(int[][] heights, Queue<Cell> queue, boolean[][] seen) {
 
-        while (!q.isEmpty()) {
-            final int i = q.peek()[0];
-            final int j = q.poll()[1];
-            final int h = heights[i][j];
+        while (!queue.isEmpty()) {
 
+            Cell cell = queue.poll();
+
+            // 동서남북 4개의 방향으로 height를 계산한다.
             for (int k = 0; k < 4; ++k) {
-                final int x = i + dirs[k];
-                final int y = j + dirs[k + 1];
+                int x = cell.i + dirs[k];
+                int y = cell.j + dirs[k + 1];
 
+                //System.out.println("cell.i=" +cell.i +" + dir[" +k +"]=" +dirs[k] +" --> x=" +x);
+                //System.out.println("cell.j=" +cell.j +" + dir[" +k +"+1]=" +dirs[k+1] +" --> y=" +y);
+
+                // x, y값이 matrix 범위를 넘어가면
                 if (x < 0 || x == heights.length || y < 0 || y == heights[0].length) {
                     continue;
                 }
 
-                if (seen[x][y] || heights[x][y] < h) {
+                // 이미 방문을 했거나 height가 낮으면
+                if (seen[x][y] || heights[x][y] < heights[cell.i][cell.j]) {
                     continue;
                 }
 
-                q.offer(new int[] { x, y });
+                queue.offer(new Cell(x, y));
                 seen[x][y] = true;
             }
         }
@@ -142,12 +159,8 @@ public class PacificAtlanticWaterFlow {
                             { 6, 7, 1, 4, 5 },
                             { 5, 1, 1, 2, 4 } };
         
-        List<List<Integer>> res = t.sol1(heights);
-
-        Iterator<List<Integer>> iter = res.iterator();
-        while(iter.hasNext()) {
-            System.out.println(iter.next());
-        }
+        System.out.println(t.sol1(heights));
+        System.out.println(t.sol2(heights));
 
     }
 }

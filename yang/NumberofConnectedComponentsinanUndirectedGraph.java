@@ -1,39 +1,39 @@
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.ArrayDeque;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 
 public class NumberofConnectedComponentsinanUndirectedGraph {
 
     /**
      * https://walkccc.me/LeetCode/problems/0323/
-     * BFS
-     * @param n
-     * @param edges
-     * @return
+     * DFS
      */
     public int sol1(int n, int[][] edges) {
-        int ans = 0;
-        List<Integer>[] graph = new List[n];
-        Set<Integer> seen = new HashSet<>();
-
-        for (int i = 0; i < n; ++i) {
-            graph[i] = new ArrayList<>();
+        
+        // edges를 map에 리스트에 넣는다.
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            List<Integer> list = new ArrayList<>();
+            map.put(i, list);
         }
-
+        
         for (int[] edge : edges) {
-            final int u = edge[0];
-            final int v = edge[1];
-            graph[u].add(v);
-            graph[v].add(u);
+            map.get(edge[0]).add(edge[1]);
+            map.get(edge[1]).add(edge[0]);
         }
-
-        for (int i = 0; i < n; ++i) {
-            if (!seen.contains(i)) {
-                bfs(graph, i, seen);
+        
+        int ans = 0;
+        Set<Integer> visited = new HashSet<>();
+        for (int i = 0; i < n; i++) {
+            // visited(set) 에 포함되어 있다면 false를 return한다.
+            if (visited.add(i)) {
+                dfs(i, map, visited);
                 ++ans;
             }
         }
@@ -41,20 +41,13 @@ public class NumberofConnectedComponentsinanUndirectedGraph {
         return ans;
     }
 
+    private void dfs(int i,
+                     Map<Integer, List<Integer>> map,
+                     Set<Integer> visited) {
 
-    private void bfs(List<Integer>[] graph, int node, Set<Integer> seen) {
-        Queue<Integer> q = new ArrayDeque<>(Arrays.asList(node));
-        seen.add(node);
-
-        while (!q.isEmpty()) {
-
-            final int u = q.poll();
-            for (final int v : graph[u]) {
-
-                if (!seen.contains(v)) {
-                    q.offer(v);
-                    seen.add(v);
-                }
+        for (int j : map.get(i)) {
+            if (visited.add(j)) {
+                dfs(j, map, visited);
             }
         }
     }
@@ -62,49 +55,52 @@ public class NumberofConnectedComponentsinanUndirectedGraph {
 
     /**
      * https://walkccc.me/LeetCode/problems/0323/
-     * DFS
-     * @param n
-     * @param edges
-     * @return
+     * BFS
      */
     public int sol2(int n, int[][] edges) {
-        int ans = 0;
-        List<Integer>[] graph = new List[n];
-        Set<Integer> seen = new HashSet<>();
 
-        for (int i = 0; i < n; ++i)
-            graph[i] = new ArrayList<>();
-
-        for (int[] edge : edges) {
-            final int u = edge[0];
-            final int v = edge[1];
-            graph[u].add(v);
-            graph[v].add(u);
+        // edges를 map에 리스트에 넣는다.
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            List<Integer> list = new ArrayList<>();
+            map.put(i, list);
         }
 
-        for (int i = 0; i < n; ++i)
-            if (seen.add(i)) {
-                dfs(graph, i, seen);
+        for (int[] edge : edges) {
+            map.get(edge[0]).add(edge[1]);
+            map.get(edge[1]).add(edge[0]);
+        }
+
+        // use queue to traverse the graph
+        int ans = 0;
+        Set<Integer> visited = new HashSet<>();
+        for (int i = 0; i < n; ++i) {
+            if (visited.add(i)) {
+                bfs(i, map, visited);
                 ++ans;
             }
+        }
 
         return ans;
     }
 
-    private void dfs(List<Integer>[] graph, int u, Set<Integer> seen) {
-        for (final int v : graph[u])
-            if (seen.add(v))
-                dfs(graph, v, seen);
+    private void bfs(int i,
+                     Map<Integer, List<Integer>> map,
+                     Set<Integer> visited) {
+
+        Queue<Integer> queue = new ArrayDeque<>(Arrays.asList(i));
+        while (!queue.isEmpty()) {
+
+            int head = queue.poll();
+            for (int j : map.get(head)) {
+
+                if (visited.add(j)) {
+                    queue.offer(j);
+                }
+            }
+        }
     }
 
-    public int sol3(int n, int[][] edges) {
-        UnionFind uf = new UnionFind(n);
-
-        for (int[] edge : edges)
-            uf.unionByRank(edge[0], edge[1]);
-
-        return uf.getCount();
-    }
 
     public static void main(String[] args) {
         NumberofConnectedComponentsinanUndirectedGraph t = new NumberofConnectedComponentsinanUndirectedGraph();
@@ -115,51 +111,9 @@ public class NumberofConnectedComponentsinanUndirectedGraph {
 
         System.out.println(t.sol1(n, edges1));
         System.out.println(t.sol1(n, edges2));
+
+        System.out.println(t.sol2(n, edges1));
+        System.out.println(t.sol2(n, edges2));
     }
 
-}
-
-/**
- * https://walkccc.me/LeetCode/problems/0323/
- */
-class UnionFind {
-
-    private int count;
-    private int[] id;
-    private int[] rank;
-    
-    public UnionFind(int n) {
-        count = n;
-        id = new int[n];
-        rank = new int[n];
-        for (int i = 0; i < n; ++i) {
-            id[i] = i;
-        }
-    }        
-
-    public void unionByRank(int u, int v) {
-        final int i = find(u);
-        final int j = find(v);
-        if (i == j) {
-            return;
-        }
-
-        if (rank[i] < rank[j]) {
-            id[i] = id[j];
-        } else if (rank[i] > rank[j]) {
-            id[j] = id[i];
-        } else {
-            id[i] = id[j];
-            ++rank[j];
-        }    
-        --count;
-    }    
-
-    public int getCount() {
-        return count;
-    }    
-
-    private int find(int u) {
-        return id[u] == u ? u : (id[u] = find(id[u]));
-    }
 }

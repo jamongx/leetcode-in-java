@@ -59,27 +59,34 @@ public class NumberofIslands {
         return ans;
     }
 
+    class Cell {
+        int i;
+        int j;
+        Cell (int i, int j) {
+            this.i = i;
+            this.j = j;
+        }
+    }
 
     private int[] dirs = { 0, 1, 0, -1, 0 };
 
     private void BFS(char[][] grid, int row, int col) {
 
-        Queue<int[]> q = new ArrayDeque<>();
+        Queue<Cell> queue = new ArrayDeque<>();
 
-        q.offer(new int[] { row, col });
+        queue.offer(new Cell(row, col));
         grid[row][col] = '2'; // Mark '2' as visited
 
-        while (!q.isEmpty()) {
+        while (!queue.isEmpty()) {
 
             // peek: 맨 앞에 있는 값 반환, 비어있을 경우 null 반환
-            int i = q.peek()[0];
             // poll: 맨 앞에 있는 값 반환 후 삭제 큐가 비어있을 경우 null 반환
-            int j = q.poll()[1];
+            Cell cell = queue.poll();
 
             for (int k = 0; k < 4; k++) {
 
-                int x = i + dirs[k];
-                int y = j + dirs[k + 1];
+                int x = cell.i + dirs[k];
+                int y = cell.j + dirs[k + 1];
 
                 if (x < 0 || x == grid.length || y < 0 || y == grid[0].length) {
                     continue;
@@ -90,7 +97,7 @@ public class NumberofIslands {
                 }
 
                 // 맨 뒤에 값 삽입
-                q.offer(new int[] { x, y });
+                queue.offer(new Cell(x, y));
                 grid[x][y] = '2'; // Mark '2' as visited
             }
         }
@@ -114,8 +121,8 @@ public class NumberofIslands {
         };
         
         NumberofIslands t = new NumberofIslands();
-        System.out.println(t.sol1(grid1));
-        System.out.println(t.sol1(grid2));
+        System.out.println(t.sol2(grid1));
+        System.out.println(t.sol2(grid2));
 
     }
 }
