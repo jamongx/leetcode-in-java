@@ -59,9 +59,9 @@ public class ReorderList {
         n1.next = n2;
         n2.next = n3;
         n3.next = n4;
-        Utils.printList(n1);
+        Utils.printListNode(n1);
         t.sol1(n1);
-        Utils.printList(n1);
+        Utils.printListNode(n1);
     }
 
  

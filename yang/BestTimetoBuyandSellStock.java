@@ -1,8 +1,8 @@
 public class BestTimetoBuyandSellStock {
 
+    // Brute force
     public int sol1(int[] prices) {
 
-        // Brute force
         int len = prices.length;
         int max = 0;
         for (int i = 0; i < len - 1; i++) {
@@ -13,38 +13,39 @@ public class BestTimetoBuyandSellStock {
         return max;
     }
 
-
     /**
      * Dynamic Programming (Kadane's Algorithm)
      * TC: O(N)
      * SC: O(1)
      */
     public int sol2(int[] prices) {
+        if (prices == null || prices.length <= 1) {
+            return 0;
+        }
 
-        // return the maximum profit you can achieve
-        // if you can't achieve any profit, return 0.
         int maxProfit = 0;
-
-        // minmum price
+        // min sell price
         int minPrice = prices[0];
 
+        // 먼저 매수하고 다음에 매도하는 순서가 보장된다.
         for (int i = 1; i < prices.length; i++) {
-            // 현재 팔수 있는 값 - 가장 싸게 산 가격
+            // 이익 = 현재 가격 (판매) - 가장 싼 구매 가격
             int profit = prices[i] - minPrice;
 
-            // 최대 profit 저장
+            // 최대 이익
             maxProfit = Math.max(maxProfit, profit);
 
-            // 현재 인덱스까지의 싸게 살 수 있는 값
+            // 현재 가격 (구매), 가장 저렴했던 가격
             minPrice = Math.min(minPrice, prices[i]);
         }
         return maxProfit;
     }
 
     public static void main(String[] args) {
-        int[] price = {7,1,5,3,6,4};
-
         BestTimetoBuyandSellStock t = new BestTimetoBuyandSellStock();
+
+        int[] price = { 7, 1, 5, 3, 6, 4 };
+
         System.out.println(t.sol2(price));
     }
 

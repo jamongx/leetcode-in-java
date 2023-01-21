@@ -1,7 +1,12 @@
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Utils {
+
+    public static void printArray(int[] array) {
+         System.out.println(Arrays.toString(array));
+    }
 
     public static void print2Darray(int[][] array) {
 
@@ -16,10 +21,14 @@ public class Utils {
         }
     }
 
-    public static void printList(ListNode n) {
+    public static void printListNode(ListNode n) {
         System.out.println("------");
         while (n != null) {
+
             System.out.print(n.val);
+            if(n.next != null) {
+                System.out.print(", ");
+            }
             n = n.next;
         }
         System.out.println();

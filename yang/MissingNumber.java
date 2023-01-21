@@ -1,36 +1,23 @@
 public class MissingNumber {
 
-    public int[] sol1(int n) {
-        int[] result = new int[n + 1];
-        for (int i = 1; i <= n; i++) {
-            result[i] = result[i >> 1] + (i & 1);
-        }
-        return result;
-    }
 
-    public int[] sol2(int n) {
-        int[] result = new int[n + 1];
+    public int sol3(int[] nums) {
+        int ans = nums.length;
 
-        int p = 1; // p tracks the index for number x
-        int pow = 1;
-        for (int i = 1; i <= n; i++) {
-            if (i == pow) {
-                result[i] = 1;
-                pow <<= 1;
-                p = 1;
-            } else {
-                result[i] = result[p] + 1;
-                p++;
-            }
+        for (int i = 0; i < nums.length; i++) {
+            ans ^= i ^ nums[i];
         }
-        return result;
+
+        return ans;
     }
 
     public static void main(String[] args) {
 
         MissingNumber t = new MissingNumber();
 
-        int n = 2;
-        System.out.println(t.sol1(n));
+        // int[] nums = {9,6,4,2,3,5,7,0,1};
+        int[] nums = {0,1};
+
+        System.out.println(t.sol3(nums));
     }
 }

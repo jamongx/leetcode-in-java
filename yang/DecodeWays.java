@@ -104,13 +104,52 @@ public class DecodeWays {
         return result;
     }
 
+    /**
+     * 역방향으로 순회 한다.
+     * @param s
+     * @return
+     */
+    public int sol3(String s) {
+        int n = s.length();
+
+        // dp[i] := # of ways to decode s[i..n)
+        // s[i]에서 s[n]까지 조합 가능한 개수
+        int[] dp = new int[n + 1];
+        dp[n] = 1; // ""
+        if(isValid(s.charAt(n - 1))) {
+            dp[n - 1] = 1; // 초기 값이 0 이므로
+        }
+
+        for (int i = n - 2; i >= 0; i--) {
+            if (isValid(s.charAt(i))) {
+                dp[i] += dp[i + 1];
+            }
+            if (isValid(s.charAt(i), s.charAt(i + 1))) {
+                dp[i] += dp[i + 2];
+            }
+        }
+
+        return dp[0];
+    }
+
+    private boolean isValid(char c) {
+        return c != '0';
+    }
+
+    private boolean isValid(char c1, char c2) {
+        return c1 == '1' || c1 == '2' && c2 < '7';
+    }
+
+
+
     public static void main(String[] args) {
         DecodeWays t = new DecodeWays();
 
         String one = "12123";
 
-        System.out.println(t.sol1(one));
-        System.out.println(t.sol2(one));
+        //System.out.println(t.sol1(one));
+        //System.out.println(t.sol2(one));
+        System.out.println(t.sol3(one));
     }    
 
 }

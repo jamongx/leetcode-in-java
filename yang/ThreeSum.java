@@ -1,20 +1,28 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ThreeSum {
 
-    public List<List<Integer>> sol2(int[] nums) {
-        List<List<Integer>> res = new LinkedList<List<Integer>>();
+    public List<List<Integer>> sol1(int[] nums) {
+        if (nums.length < 3) {
+            return new ArrayList<>();
+        }
+
+        List<List<Integer>> res = new LinkedList<>();
 
         // sort array
         Arrays.sort(nums);
 
         for (int i = 0; i < nums.length - 2; i++) {
             // avoid duplicate solutions
-            if (i > 0 && nums[i] == nums[i - 1])
+            if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
+            }
 
+            // Choose nums[i] as the first num in the triplet,
+            // and search the remaining nums in [i + 1, n - 1]
             int left = i + 1;
             int right = nums.length - 1;
 
@@ -26,13 +34,17 @@ public class ThreeSum {
                     left++;
                     right--;
                     // avoid duplicate solutions
-                    while (nums[left] == nums[left - 1] && left < right)
+                    while (left < right && nums[left] == nums[left - 1]) {
                         left++;
-                    while (nums[right] == nums[right + 1] && left < right)
+                    }
+                    while (left < right && nums[right] == nums[right + 1]) {
                         right--;
-                } else if (sum > 0) {
+                    }
+                }
+                else if (sum > 0) {
                     right--;
-                } else {
+                }
+                else {
                     left++;
                 }
             }
@@ -45,7 +57,7 @@ public class ThreeSum {
         int[] nums = {-1, 0, 1, 2, -1, -4};
 
         ThreeSum t = new ThreeSum();
-        System.out.println(t.sol2(nums));
+        System.out.println(t.sol1(nums));
     }
 
 }

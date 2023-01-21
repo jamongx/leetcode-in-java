@@ -130,7 +130,17 @@ public class GraphValidTree {
      * space: O(n)
      */
     public boolean sol3(int n, int[][] edges) {
-        return false;
+        if (n == 0 || edges.length != n - 1) {
+            return false;
+        }
+
+        UnionFind uf = new UnionFind(n);
+
+        for (int[] edge : edges) {
+            uf.unionByRank(edge[0], edge[1]);
+        }
+
+        return uf.getCount() == 1;
     }
 
 
@@ -140,10 +150,10 @@ public class GraphValidTree {
 
         int nodes1 = 5;
         int[][] edges1 = {{0, 1}, {0, 2}, {0, 3}, {1, 4}};   
-        System.out.println(t.sol1(nodes1, edges1));
+        System.out.println(t.sol3(nodes1, edges1));
 
         int nodes2 = 5;
         int[][] edges2 = {{0, 1}, {1, 2}, {2, 3}, {1, 3}, {1, 4}};
-        System.out.println(t.sol1(nodes2, edges2));
+        System.out.println(t.sol3(nodes2, edges2));
     }
 }

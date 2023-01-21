@@ -7,70 +7,81 @@ public class SearchinRotatedSortedArray {
         return binarySearch(nums, 0, nums.length - 1, target);
     }
 
-    private int binarySearch(int[] nums, int start, int end, int target) {
-        if(start >= end) {
-            return (nums[start] == target) ? start : -1;
+    private int binarySearch(int[] nums, int l, int r, int target) {
+        if(l >= r) {
+            return (nums[l] == target) ? l : -1;
         }
 
-        int ret = -1;
-        int mid = (start + end) >>> 1;
-        if(nums[mid] == target) {
-            ret = mid;
+        int result = -1;
+
+        //int m = (l + r) / 2;
+        int m = (l + r) >>> 1;
+
+        if(nums[m] == target) {
+            result = m;
         }
         else {
-            ret = binarySearch(nums, start, mid - 1, target);
-            if(ret < 0)
-                ret = binarySearch(nums, mid + 1, end, target);
-        }
-
-        return ret;
-    }    
-
-    public int sol2(int[] nums, int target) {
-
-        int left = 0;
-        int right = nums.length - 1;
-
-        while (left <= right) {
-            // int mid = left + (right-left)/2;
-            int mid = (left + right) >>> 1;
-
-            if (target == nums[mid]) {
-                return mid;
-            }
-
-            // left sorted portion
-            if (nums[left] <= nums[mid]) {
-                // if(target > nums[mid] || target < nums[left]) {
-                if(nums[left] <= target && target < nums[mid]) {
-                    right = mid - 1;
-                }
-                else {
-                    left = mid + 1;
-                }
-            }
-            // right sorted portion
-            else {
-                // if(target < nums[mid] || target > nums[right]) {
-                if(nums[mid] < target && target <= nums[right]) {
-                    left = mid + 1;
-                }
-                else {
-                    right = mid - 1;
-                }
+            result = binarySearch(nums, l, m - 1, target);
+            if(result < 0) {
+                result = binarySearch(nums, m + 1, r, target);
             }
         }
 
-        return -1;
-
+        return result;
     }
 
+
+    /**
+     * 
+     * @param nums
+     * @param target
+     * @return the index of the target
+     */
+    public int sol2(int[] nums, int target) {
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l <= r) {
+
+            //int m = (l + r) / 2;
+            int m = (l + r) >>> 1;
+
+            // m값을 계산하는 알고리즘
+            if (nums[m] == target) {
+                return m;
+            }
+
+            // 정렬된 파트를 기준으로 검색한다.
+            // left: nums[l..m] are sorted
+            if (nums[l] <= nums[m]) {
+                // target값의 위치로 r과 l값을 바꾼다.
+                if (nums[l] <= target && target < nums[m]) {
+                    r = m - 1;
+                }
+                else {
+                    l = m + 1;
+                }
+            }
+            // right: nums[m..n - 1] are sorted
+            else {
+                if (nums[m] < target && target <= nums[r]) {
+                    l = m + 1;
+                }
+                else {
+                    r = m - 1;
+                }
+            }
+        }
+        return -1;
+    }
+
+
     public static void main(String[] args) {
+        SearchinRotatedSortedArray t = new SearchinRotatedSortedArray();
+
         int[] nums = {4, 5, 6, 7, 0, 1, 2};
         int target = 0;
 
-        SearchinRotatedSortedArray t = new SearchinRotatedSortedArray();
-        //System.out.println(t.sol1(nums, target));
         System.out.println(t.sol2(nums, target));
     }
 }

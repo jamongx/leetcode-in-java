@@ -27,7 +27,7 @@ public class HouseRobber {
             // i의 위치에서
             // nums[i]와 dp[i-2]를 더한 값과 dp[i-1]을 비교하여 큰값을 선택
             // 연속적으로 물건을 훔치면 안되므로 
-            dp[i] = Math.max(dp[i - 2] + nums[i], dp[i - 1]);
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
 
             System.out.println("dp[" +i +"]=" +dp[i] +" <- max(dp[" +(i-2) +"]=" +dp[i-2] +" + nums[" +i +"]=" +nums[i] +", dp[" +(i-1) +"]=" +dp[i-1] +")");
         }
@@ -35,9 +35,26 @@ public class HouseRobber {
         return dp[nums.length - 1];
     }
 
+
+    public int sol2(int[] nums) {
+        int prev1 = 0; // dp[i - 1]
+        int prev2 = 0; // dp[i - 2]
+
+        for (int num : nums) {
+            int dp = Math.max(prev1, prev2 + num);
+            prev2 = prev1; // dp[i-1]을 dp[i-2]로 복사한다.
+            prev1 = dp;    // dp를 dp[i-1]로 복사한다.
+        }
+
+        return prev1;
+    }
+
     public static void main(String[] args) {
         HouseRobber t = new HouseRobber();
+
         int[] nums = { 2, 7, 9, 3, 1 };
-        System.out.println( t.sol1(nums));
+
+        System.out.println(t.sol1(nums));
+        System.out.println(t.sol2(nums));
     }
 }

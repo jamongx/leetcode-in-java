@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CombinationSum {
@@ -43,11 +44,38 @@ public class CombinationSum {
         }
     }
 
+
+    public List<List<Integer>> sol2(int[] candidates, int target) {
+        List<List<Integer>> ans = new ArrayList<>();
+
+        Arrays.sort(candidates);
+        dfs(0, candidates, target, new ArrayList<>(), ans);
+        return ans;
+    }
+
+    private void dfs(int s, int[] candidates, int target, List<Integer> path, List<List<Integer>> ans) {
+        if (target == 0) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+        if (target < 0) {
+            return;
+        }
+
+        for (int i = s; i < candidates.length; i++) {
+            path.add(candidates[i]);
+            dfs(i, candidates, target - candidates[i], path, ans);
+            path.remove(path.size() - 1);
+        }
+    }
+
     public static void main(String[] args) {
         CombinationSum t = new  CombinationSum();
 
         int[] candidates = { 2, 3, 5, 7 };
         int target = 7;
-        List<List<Integer>> results = t.sol1(candidates, target);
+
+        List<List<Integer>> results = t.sol2(candidates, target);
+        System.out.println(results);
     }
 }

@@ -5,30 +5,27 @@ import java.util.ArrayDeque;
 
 public class CloneGraph {
 
+    private Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
+
     // DFS
-    public UndirectedGraphNode sol1(UndirectedGraphNode node) {
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
         if (node == null) {
             return null;
         }
-        
-        // copy 된 node을 저장하여 무한 loop를 막는다.
-        Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
-        // dfs로 복사된 node를 return한다.
-        return DFS(node, map);
-    }
 
-    private UndirectedGraphNode DFS(UndirectedGraphNode node, Map<UndirectedGraphNode, UndirectedGraphNode> map) {
         if (map.containsKey(node)) {
             return map.get(node);
         }
 
-        UndirectedGraphNode copy1 = new UndirectedGraphNode(node.label);
-        map.put(node, copy1);
+        UndirectedGraphNode newNode = new UndirectedGraphNode(node.label);
+        map.put(node, newNode);
+
         for (UndirectedGraphNode neighbor : node.neighbors) {
-            copy1.neighbors.add(DFS(neighbor, map));
+            newNode.neighbors.add(cloneGraph(neighbor));
         }
-        System.out.println("DFS=" +copy1);
-        return copy1;
+
+        System.out.println("DFS=" +newNode);
+        return newNode;
     }
 
 

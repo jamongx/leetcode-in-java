@@ -18,9 +18,9 @@ public class ListNode {
 
         StringBuilder str = new StringBuilder();
         str.append(val);
-        
-        ListNode iter = next; 
-        while(iter != null) {
+
+        ListNode iter = next;
+        while (iter != null) {
             str.append(", ");
             str.append(iter.val);
             iter = iter.next;

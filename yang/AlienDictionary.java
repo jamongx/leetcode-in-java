@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
-/**
- * https://massivealgorithms.blogspot.com/2019/04/leetcode-269-alien-dictionary.html
- */
 public class AlienDictionary {
 
     /**
