@@ -1,66 +1,55 @@
+import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class NonOverlappingIntervals {
 
-    
-    public int sol1(int[][] intervals) {
-        if (intervals.length == 0)
-            return 0;
-
-        Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
-
-        int ans = 0;
-        int currentEnd = intervals[0][1];
-        
-        for (int i = 1; i < intervals.length; ++i) {
-            if (intervals[i][0] >= currentEnd) {
-                currentEnd = intervals[i][1];
-            }
-            else {
-                ++ans;
-            }
-        }
-        
-        return ans;
-    }
-
-    public int sol2(List<Interval> intvList) {
-        if (intvList == null || intvList.size() <= 1) {
+    public int sol1(List<Interval> list) {
+        if (list == null || list.size() <= 1) {
             return 0;
         }
 
-        Collections.sort(intvList, Comparator.comparing((Interval itl) -> itl.start));
+        // merge sort: o(nlogn)
+        // end 값으로 정렬을 해야 된다.
+        Collections.sort(list, Comparator.comparing((Interval one) -> one.end));
+        System.out.println("sort=" +list);
 
-        int ans = 0;
-        Interval t = intvList.get(0);
+        int count = 0;
+        Interval temp = list.get(0);
+        System.out.println("temp[0]=" +temp);
 
-        for (int i = 1; i < intvList.size(); i++) {
-            Interval c = intvList.get(i);
-            if (c.start >= t.end) {
-                t.end = c.end;
+        // 겹치지 않는 것을 이어서 가장 긴 것을 만든다로 문제를 전환한다.
+        // 겹치는 것은 count를 해서 return한다.
+        for (int i = 1; i < list.size(); i++) {
+            Interval curr = list.get(i);
+            if (curr.start >= temp.end) {
+                temp.end = curr.end;
             } else {
-                ++ans;
+                System.out.println("remove=" +curr);
+                count++;
             }
+            System.out.println("temp[" +i +"]=" +temp);
         }
-        return ans;
+        return count;
     }
     
     public static void main(String[] args) {
         NonOverlappingIntervals t = new NonOverlappingIntervals();
 
+        /*List<Interval> list = new ArrayList<>();
+        list.add(new Interval(1,2)); // temp (1,2)
+        list.add(new Interval(2,3)); // temp (1,3)
+        list.add(new Interval(3,4)); // temp (1,4)
+        list.add(new Interval(1,3)); /// -> remove*/
 
-        List<Interval> intervals = new ArrayList<>();
-        intervals.add(new Interval(1,2));
-        intervals.add(new Interval(1,2));
-        intervals.add(new Interval(1,2));
-        //intervals.add(new Interval(2,3));
-        //intervals.add(new Interval(3,4));
-        //intervals.add(new Interval(1,3));
-
-        System.out.println( t.sol2(intervals));
+        // {{1,3},{2,4},{3,8},{5,6},{7,8}}
+        List<Interval> list = new ArrayList<>();
+        list.add(new Interval(1,3));
+        list.add(new Interval(2,4));
+        list.add(new Interval(3,8));
+        list.add(new Interval(5,6));
+        list.add(new Interval(7,8));
+        System.out.println(t.sol1(list));
     }
 }

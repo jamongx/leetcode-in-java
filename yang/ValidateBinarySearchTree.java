@@ -24,29 +24,30 @@ public class ValidateBinarySearchTree {
             return false;
         }
 
-        return isValidBST(root.left, minNode, root) &&
-                isValidBST(root.right, root, maxNode);
+        // root.left는  root 보다 작다.
+        // root.right는 root 보다 크다.
+        return isValidBST(root.left,  minNode, root) &&
+               isValidBST(root.right, root,    maxNode);
     }
 
 
     public boolean sol2(TreeNode root) {
         Deque<TreeNode> stack = new ArrayDeque<>();
 
-        // predecessor 전임자
-        TreeNode pred = null;
+        TreeNode pred = null; // predecessor
 
         while (root != null || !stack.isEmpty()) {
 
-            // root와 root.left를 stack에 넣는다.
             // binary search tree는 root.left가 root보다 작은 값을 갖는다.
+            // loop를 돌면서 root와 root.left들을 leaf까지 stack에 넣는다.
             while (root != null) {
                 stack.push(root);
                 System.out.println("root or root.left=" +root.val);
                 root = root.left;
             }
 
-            // stack에서 가장 마지막에 들어간 것을 하나 뽑아서
-            // 값을 비교한다.
+            // stack 이기 때문에
+            // 가장 마지막에 들어간 node가 가장 마지막 node
             root = stack.pop();
             
             if (pred == null) {
@@ -59,12 +60,12 @@ public class ValidateBinarySearchTree {
                 System.out.println("pred.val=" +pred.val +", root.val=" +root.val);
             }
 
-            // pred가 null이면 skip
-            // pred.val가 root.val보다 크거나 같으면 -> false
+            // 아래 root가 pred가 되고 root.right -> root가 되었으므로,
+            // root가 pred 보다 커야 된다.
             if (pred != null && pred.val >= root.val) {
                 return false;
             }
-
+            
             pred = root;
             root = root.right;
         }
@@ -73,6 +74,8 @@ public class ValidateBinarySearchTree {
 
 
     public static void main(String[] args) {
+
+        ValidateBinarySearchTree t = new ValidateBinarySearchTree();
 
         TreeNode one = new TreeNode(2);
         one.left = new TreeNode(1);
@@ -84,7 +87,6 @@ public class ValidateBinarySearchTree {
         two.right.left = new TreeNode(3);
         two.right.right = new TreeNode(6);
  
-        ValidateBinarySearchTree t = new ValidateBinarySearchTree();
 
         System.out.println(t.sol2(one));
         System.out.println(t.sol2(two));

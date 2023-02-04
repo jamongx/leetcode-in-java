@@ -6,9 +6,9 @@ import java.util.HashSet;
 public class LongestConsecutiveSequence {
 
     /**
-     * https://www.programcreek.com/2013/01/leetcode-longest-consecutive-sequence-java/
-     * Because it requires O(n) complexity, we can not solve the problem by sorting the array first. Sorting takes at least O(nlogn) time.
-     * We can use a HashSet to add and remove elements. The add, remove and contains methods have constant time complexity O(1).
+     * Union Find
+     * Time: O(n)
+     * Space: O(n)
      * @param nums
      * @return
      */
@@ -40,7 +40,7 @@ public class LongestConsecutiveSequence {
     }
 
     /**
-     * https://walkccc.me/LeetCode/problems/0128/
+     * Union Find
      * Time: O(n)
      * Space: O(n)
      * @param nums

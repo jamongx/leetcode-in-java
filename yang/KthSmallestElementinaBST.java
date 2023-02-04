@@ -6,11 +6,8 @@ public class KthSmallestElementinaBST {
     /**
      * Binary Search
      * 가장 작은걸 찾아서 밑에서 위로 올라오면서 k-th를 찾는 것이다.
-     * Time: O(n^2)
-     * Space: O(h)
-     * @param root
-     * @param k
-     * @return
+     * TC: O(n^2)
+     * SC: O(h)
      */
     public int sol1(TreeNode root, int k) {
         // leftCount -> 왼쪽(mid 보다 작은 node 개수)
@@ -30,6 +27,7 @@ public class KthSmallestElementinaBST {
             return sol1(root.left, k);
         }
 
+        // leftCount가 K보다 작으면 right side를 다시 찾는다.
         System.out.println("leftCount (<k)=" +leftCount);
         return sol1(root.right, k - 1 - leftCount);
     }
@@ -47,18 +45,15 @@ public class KthSmallestElementinaBST {
 
     /**
      * Inorder Traversal: left -> mid -> right
-     * Time: O(n)
-     * Space: O(h)
-     * @param root
-     * @param k
-     * @return
+     * TC: O(n)
+     * SC: O(h)
      */
     public int sol2(TreeNode root, int k) {
         
         int[] temp = new int[3];
-        temp[0] = k; // k-th
-        temp[1] = -1; // ans
-        temp[2] = 0; // rank
+        temp[0] = k;  // k-th
+        temp[1] = -1; // result
+        temp[2] = 0;  // rank
 
         traverse(root, temp);
         return temp[1];
@@ -69,26 +64,24 @@ public class KthSmallestElementinaBST {
             return;
         }
 
-        // left 비교하고
+        // 1) left 비교하고
         traverse(root.left, temp);
 
-        // mid 비교한다.
+        // 2) mid 비교한다.
+        // rank와 krk 같으며 return
         if (++temp[2] == temp[0]) {
             temp[1] = root.val;
             return;
         }
 
-        // right 비교한다.
+        // 3) right 비교한다.
         traverse(root.right, temp);
     }
 
     /**
      * Stack
-     * Time: O(n)
-     * Space: O(h)
-     * @param root
-     * @param k
-     * @return
+     * TC: O(n)
+     * SC: O(h)
      */
     public int sol3(TreeNode root, int k) {
         Deque<TreeNode> stack = new ArrayDeque<>();
@@ -98,7 +91,7 @@ public class KthSmallestElementinaBST {
             root = root.left;
         }
 
-        for (int i = 0; i < k - 1; ++i) {
+        for (int i = 0; i < k - 1; i++) {
             root = stack.pop();
             root = root.right;
             while (root != null) {
@@ -112,6 +105,7 @@ public class KthSmallestElementinaBST {
 
 
     /**
+     * Extra Data Structure
      * We can let each node track the order, i.e.,
      * the number of elements that are less than itself. Time is O(log(n)).
      */

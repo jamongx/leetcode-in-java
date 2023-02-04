@@ -41,22 +41,23 @@ public class JumpGame {
     }
 
     /**
-     * https://walkccc.me/LeetCode/problems/0055/
+     * Greedy
      * TC: O(n)
      * SC: O(1)
      * @param nums
      * @return
      */
-    public boolean canJump(int[] nums) {
+    public boolean sol2(int[] nums) {
         int i = 0;
         
-        for (int reach = 0; i < nums.length && i <= reach; ++i) {
+        for (int reach = 0; i < nums.length && i <= reach; i++) {
             reach = Math.max(reach, i + nums[i]);
             System.out.println("i=" + i + ", nums[" + i + "]=" + nums[i] + ", reach=" + reach);
         }
 
-        return i == nums.length;
+        return (i == nums.length);
     }
+
 
     public static void main(String[] args) {
         JumpGame t = new JumpGame();

@@ -3,26 +3,20 @@ public class NumberOf1Bits {
     // O(32) -> O(1)
     public int sol1(int n) {
         int count = 0;
-        for (int i = 1; i < 33; i++) {
-            if (getBit(n, i) == true) {
-                count++;
+        for (int i = 0; i < 32; ++i) {
+            if (((n >> i) & 1) == 1) {
+                ++count;
             }
         }
         return count;
     }
-
-    public boolean getBit(int n, int i) {
-        return (n & (1 << i)) != 0;
-    }   
-
+    
+    // Best performance
+    // n이 0일때 까지 loop를 돌기때문에 32번 보다 작게 돈다.
+    // >>>: bit들을 오른쪽으로 이동시킨 후에 왼쪽의 빈공간은 모두 0으로 채운다.
     public int sol2(int n) {
-        return Integer.bitCount(n);
-    }
-
-    // best performance
-    public int sol3(int n) {
-
         int count = 0;
+
         while (n != 0) {
             count += (n & 1);
             n = n >>> 1;
@@ -30,11 +24,17 @@ public class NumberOf1Bits {
         return count;
     }
 
+    public int sol3(int n) {
+        return Integer.bitCount(n);
+    }
+    
     public static void main(String[] args) {
-
         NumberOf1Bits t = new NumberOf1Bits();
 
         int n = 2;
+
+        System.out.println(t.sol1(n));
+        System.out.println(t.sol2(n));
         System.out.println(t.sol3(n));
     }
 }

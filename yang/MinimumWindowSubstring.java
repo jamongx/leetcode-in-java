@@ -1,14 +1,69 @@
+import java.util.Map;
 import java.util.HashMap;
 
 public class MinimumWindowSubstring {
-   
+
+    // s = "ADOBECODEBANC"
+    // t = "ABC"
     public String sol1(String s, String t) {
 
+        int[] count = new int[128];
+        for (char c : t.toCharArray()) {
+            count[c]++;
+        }
+
+        int bestLeft = -1; // left location
+
+        // 1자리일때는 +1이 필요하다
+        int minLength = s.length() + 1; // src len + 1
+
+        int required = t.length(); // target len
+
+        for (int l = 0, r = 0; r < s.length(); r++) {
+
+            if (--count[s.charAt(r)] >= 0) {
+                required--;
+                System.out.println("required--=" +required);
+            }
+
+            while (required == 0) {
+
+                if (minLength > Utils.windowSize(l, r)) {
+                    bestLeft = l;
+                    minLength = Utils.windowSize(l, r);
+                    System.out.println("bestLeft=" +bestLeft +", minLength=" +minLength);
+                }
+
+                if (++count[s.charAt(l++)] > 0) {
+                    required++;
+                    System.out.println("required++=" +required);
+                }
+            }
+        }
+        
+        return bestLeft == -1 ? "" : s.substring(bestLeft, bestLeft + minLength);
+    }
+
+    public static void main(String[] args) {
+        MinimumWindowSubstring min = new MinimumWindowSubstring();
+
+        //String s = "ADOBECODEBANC";
+        //String t = "ABC";
+        String s = "a";
+        String t = "aa";
+
+        System.out.println(min.sol1(s, t));
+        //System.out.println(min.sol2(s, t));
+    }
+
+
+    // s = "ADOBECODEBANC", t = "ABC"
+    public String sol2(String s, String t) {
+
         // target dictionary
-        HashMap<Character, Integer> goal = new HashMap<>();
-        for (int k = 0; k < t.length(); k++) {
-            // 여러개 있을수 있으므로 getOrDefault()를 사용한다.
-            goal.put(t.charAt(k), goal.getOrDefault(t.charAt(k), 0) + 1);
+        Map<Character, Integer> target = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            target.put(c, target.getOrDefault(c, 0) + 1);
         }
         
         int total     = 0;
@@ -17,84 +72,39 @@ public class MinimumWindowSubstring {
 
         HashMap<Character, Integer> map = new HashMap<>();
 
-        for (int i = 0, j = 0; j < s.length(); j++) {
+        for (int l = 0, r = 0; r < s.length(); r++) {
 
-            char c = s.charAt(j);
-            if (!goal.containsKey(c)) {
-                // s의 문자 하나가 goal에 없으면 skip
-                continue;
+            char curr = s.charAt(r);
+            if (!target.containsKey(curr)) {
+                continue; // s의 문자 하나가 goal에 없으면 skip
             }
 
             // if c is a target character in the goal and count is < goal, increase the total.
-            int count = map.getOrDefault(c, 0);
-            if (count < goal.get(c)) {
+            int count = map.getOrDefault(curr, 0);
+            if (count < target.get(curr)) {
                 total++;
             }
-            map.put(c, count + 1);
+            map.put(curr, count + 1);
 
             // when total reaches the goal, trim from left until no more chars can be trimmed.
             if (total == t.length()) {
 
-                while (!goal.containsKey(s.charAt(i)) || map.get(s.charAt(i)) > goal.get(s.charAt(i))) {
-                    char pc = s.charAt(i);
-                    if (goal.containsKey(pc) && map.get(pc) > goal.get(pc)) {
+                while (!target.containsKey(s.charAt(l)) || map.get(s.charAt(l)) > target.get(s.charAt(l))) {
+                    char pc = s.charAt(l);
+                    if (target.containsKey(pc) && map.get(pc) > target.get(pc)) {
                         map.put(pc, map.get(pc) - 1);
                     }
-                    i++;
+                    l++;
                 }
 
-                if (minLen > j - i + 1) {
-                    minLen = j - i + 1;
-                    result = s.substring(i, j + 1);
+                if (minLen > r - l + 1) {
+                    minLen = r - l + 1;
+                    result = s.substring(l, r + 1);
                 }
             }
         }
         return result;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    public String sol2(String s, String t) {
-
-        int[] count = new int[128];
-        for (final char c : t.toCharArray()) {
-            ++count[c];
-        }
-
-        int required = t.length();
-        int bestLeft = -1;
-        int minLength = s.length() + 1;
-
-        for (int l = 0, r = 0; r < s.length(); ++r) {
-
-            if (--count[s.charAt(r)] >= 0) {
-                --required;
-            }
-
-            while (required == 0) {
-
-                if (r - l + 1 < minLength) {
-                    bestLeft = l;
-                    minLength = r - l + 1;
-                }
-
-                if (++count[s.charAt(l++)] > 0) {
-
-                }
-                    ++required;
-            }
-        }
-
-        return bestLeft == -1 ? "" : s.substring(bestLeft, bestLeft + minLength);
-    }
-
-    public static void main(String[] args) {
-        MinimumWindowSubstring t = new MinimumWindowSubstring();
-
-        String s = "ADOBECODEBANC";
-        String o = "ABC";
-        //Output: "BANC"
-
-        System.out.println(t.sol1(s, o));
-    }
 
 }

@@ -1,25 +1,21 @@
 public class LowestCommonAncestorofaBinarySearchTree {
 
     /**
-     * Recursion
-     * Binary search tree: left < parent < right
      * https://walkccc.me/LeetCode/problems/0235/
-     * @param root
-     * @param p
-     * @param q
-     * @return
+     * Recursion
+     * Binary search tree: left < mid < right
      */
     public TreeNode sol1(TreeNode root, TreeNode p, TreeNode q) {
         
         // root.val이 p 와 q 둘 중의 큰 값보다 클때
-        // root 보다 작은 left 로 recursion을 돈다.
+        // root 보다 작은 root.left 로 recursion을 돈다.
         if (root.val > Math.max(p.val, q.val)) {
             System.out.println("max, root.val=" +root.val +", p.val=" +p.val +", q.val=" +q.val);
             return sol1(root.left, p, q);
         }
         
         // p 와 q 둘 중의 작은 값보다 root.val이 작을때
-        // root 보다 큰 right 로 recursion을 돈다.
+        // root 보다 큰 root.right 로 recursion을 돈다.
         if (root.val < Math.min(p.val, q.val)) {
             System.out.println("min, root.val=" +root.val +", p.val=" +p.val +", q.val=" +q.val);
             return sol1(root.right, p, q);
@@ -30,32 +26,31 @@ public class LowestCommonAncestorofaBinarySearchTree {
     }
 
     /**
-     * Iterator
-     * Binary search tree: left < parent < right
      * https://www.programcreek.com/2014/07/leetcode-lowest-common-ancestor-of-a-binary-search-tree-java/
-     * @param root
-     * @param p
-     * @param q
-     * @return
+     * Iterator
+     * Binary search tree: left < mid < right
      */
     public TreeNode sol2(TreeNode root, TreeNode p, TreeNode q) {
 
-        TreeNode temp = root;
+        TreeNode pred = root;
 
-        while (temp != null) {
-            if (temp.val > Math.max(p.val, q.val)) {
-                temp = temp.left;
+        while (pred != null) {
+            if (pred.val > Math.max(p.val, q.val)) {
+                pred = pred.left;
             }
-            else if (temp.val < Math.min(p.val, q.val)) {
-                temp = temp.right;
+            else if (pred.val < Math.min(p.val, q.val)) {
+                pred = pred.right;
             } else {
-                return temp;
+                return pred;
             }
         }
         return null;
     }
 
     public static void main(String[] args) {
+
+        LowestCommonAncestorofaBinarySearchTree t
+         = new LowestCommonAncestorofaBinarySearchTree();
 
         TreeNode root = new TreeNode(6);
         root.left = new TreeNode(2);
@@ -70,8 +65,6 @@ public class LowestCommonAncestorofaBinarySearchTree {
         TreeNode p = new TreeNode(0);
         TreeNode q = new TreeNode(5);
 
-        LowestCommonAncestorofaBinarySearchTree t
-         = new LowestCommonAncestorofaBinarySearchTree();
 
         System.out.println("Lowest Common Ancestor: " + t.sol1(root, p, q).val);
     }

@@ -1,56 +1,46 @@
 public class LongestPalindromicSubstring {
 
     /**
-     * https://walkccc.me/LeetCode/problems/0005/
-     * Approach 1: Naive
-     * Time: O(n^2)
-     * Space: O(n)
-     * @param s
-     * @return
+     * Dynamic Programming
+     * TC: O(n^2)
+     * SC: O(n^2)
      */
     public String sol1(String s) {
-        if (s.isEmpty()) {
-            return "";
+        if (s == null || s.length() <= 1) {
+            return s;
         }
 
-        // [start, end] indices of the longest palindrome in s
-        int[] indices = { 0, 0 };
+        int len = s.length();
+        int maxLen = 1;
+        boolean[][] dp = new boolean[len][len];
 
-        for (int i = 0; i < s.length(); ++i) {
-            int[] indices1 = extend(s, i, i);
-            if (indices1[1] - indices1[0] > indices[1] - indices[0])
-                indices = indices1;
-            if (i + 1 < s.length() && s.charAt(i) == s.charAt(i + 1)) {
-                int[] indices2 = extend(s, i, i + 1);
-                if (indices2[1] - indices2[0] > indices[1] - indices[0])
-                    indices = indices2;
+        String longest = null;
+        for (int l = 0; l < len; l++) { // length of palindrome substring
+            for (int i = 0; i < (len - l); i++) {
+
+                int j = i + l; // end of substring
+
+                if (s.charAt(i) == s.charAt(j) && (j - i <= 2 || dp[i + 1][j - 1])) {
+
+                    dp[i][j] = true;
+
+                    if (j - i + 1 > maxLen) {
+                        maxLen = j - i + 1;
+                        longest = s.substring(i, j + 1);
+                    }
+                }
             }
         }
-
-        return s.substring(indices[0], indices[1] + 1);
-    }
-
-    // Returns [start, end] indices of the longest palindrome extended from s[i..j]
-    private int[] extend(final String s, int i, int j) {
-
-        for (; i >= 0 && j < s.length(); --i, ++j) {
-            if (s.charAt(i) != s.charAt(j)) {
-                break;
-            }
-        }
-        return new int[] { i + 1, j - 1 };
+        return longest;
     }
 
 
     /**
-     * https://www.programcreek.com/2013/12/leetcode-solution-of-longest-palindromic-substring-java/
-     * Approach 1: Naive
-     * Time: O(n^2)
-     * Space: O(n)
-     * @param s
-     * @return
+     * Naive
+     * TC: O(n^2)
+     * SC: O(1)
      */
-    public String sol11(String s) {
+    public String sol2(String s) {
         if (s.isEmpty()) {
             return null;
         }
@@ -63,13 +53,13 @@ public class LongestPalindromicSubstring {
 
         for (int i = 0; i < s.length(); i++) {
 
-            // get longest palindrome with center of i
+            // odd length, get longest palindrome with center of i
             String tmp = helper(s, i, i);
             if (tmp.length() > longest.length()) {
                 longest = tmp;
             }
 
-            // get longest palindrome with center of i, i+1
+            // even length, get longest palindrome with center of i, i+1
             tmp = helper(s, i, i + 1);
             if (tmp.length() > longest.length()) {
                 longest = tmp;
@@ -94,85 +84,47 @@ public class LongestPalindromicSubstring {
         return s.substring(begin + 1, end);
     }
 
-    /**
-     * https://www.programcreek.com/2013/12/leetcode-solution-of-longest-palindromic-substring-java/
-     * Approach 2: Dynamic Programming
-     * Time: O(n^2)
-     * Space: O(n^2)
-     * @param s
-     * @return
-     */
-
-    public String sol2(String s) {
-        if (s == null || s.length() <= 1) {
-            return s;
-        }
-
-        int len = s.length();
-        int maxLen = 1;
-        boolean[][] dp = new boolean[len][len];
-
-        String longest = null;
-        for (int l = 0; l < len; l++) {
-
-            for (int i = 0; i < (len-l); i++) {
-
-                int j = i + l;
-
-                if (s.charAt(i) == s.charAt(j) && (j - i <= 2 || dp[i + 1][j - 1])) {
-                    dp[i][j] = true;
-
-                    if (j - i + 1 > maxLen) {
-                        maxLen = j - i + 1;
-                        longest = s.substring(i, j + 1);
-                    }
-                }
-            }
-        }
-
-        return longest;
-    }
 
     /**
-     * https://walkccc.me/LeetCode/problems/0005/
-     * Approach 3: Manacher
-     * Time: O(n)
-     * Space: O(n)
-     * @param s
-     * @return
+     * Manacher
+     * TC: O(n)
+     * SC: O(n)
      */
     public String sol3(String s) {
-        final String t = join('@' + s + '$', '#');
-        final int n = t.length();
+        String t = join('@' + s + '$', '#');
+        int n = t.length();
         // t[i - maxExtends[i]..i) ==
         // t[i + 1..i + maxExtends[i]]
         int[] maxExtends = new int[n];
         int center = 0;
 
-        for (int i = 1; i < n - 1; ++i) {
-            final int rightBoundary = center + maxExtends[center];
-            final int mirrorIndex = center - (i - center);
+        for (int i = 1; i < n - 1; i++) {
+            int rightBoundary = center + maxExtends[center];
+            int mirrorIndex = center - (i - center);
             maxExtends[i] = rightBoundary > i && Math.min(rightBoundary - i, maxExtends[mirrorIndex]) > 0 ? 1 : 0;
 
             // Attempt to expand palindrome centered at i
-            while (t.charAt(i + 1 + maxExtends[i]) == t.charAt(i - 1 - maxExtends[i]))
+            while (t.charAt(i + 1 + maxExtends[i]) == t.charAt(i - 1 - maxExtends[i])) {
                 ++maxExtends[i];
+            }
 
             // If palindrome centered at i expand past rightBoundary,
             // adjust center based on expanded palindrome.
-            if (i + maxExtends[i] > rightBoundary)
+            if (i + maxExtends[i] > rightBoundary) {
                 center = i;
+            }
         }
 
         // Find the maxExtend and bestCenter
         int maxExtend = 0;
         int bestCenter = -1;
 
-        for (int i = 0; i < n; ++i)
+        for (int i = 0; i < n; ++i) {
             if (maxExtends[i] > maxExtend) {
                 maxExtend = maxExtends[i];
                 bestCenter = i;
             }
+        }
 
         return s.substring((bestCenter - maxExtend) / 2, (bestCenter + maxExtend) / 2);
     }
@@ -185,6 +137,14 @@ public class LongestPalindromicSubstring {
                 sb.append(c);
         }
         return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        LongestPalindromicSubstring t = new LongestPalindromicSubstring();
+        String s = "babad";
+
+        System.out.println(t.sol3(s));
+        
     }
 
 }

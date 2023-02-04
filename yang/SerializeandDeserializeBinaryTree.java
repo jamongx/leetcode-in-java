@@ -7,9 +7,6 @@ public class SerializeandDeserializeBinaryTree {
 
     /**
      * BFS
-     * Encodes a tree to a single string.
-     * @param root
-     * @return
      */
     public String serialize1(TreeNode root) {
         if (root == null) {
@@ -36,9 +33,6 @@ public class SerializeandDeserializeBinaryTree {
 
     /**
      * BFS
-     * Decodes your encoded data to tree.
-     * @param data
-     * @return
      */
     public TreeNode deserialize1(String data) {
         if (data.equals("")) {
@@ -66,9 +60,6 @@ public class SerializeandDeserializeBinaryTree {
 
     /**
      * DFS
-     * Encodes a tree to a single string.
-     * @param root
-     * @return
      */
     public String serialize2(TreeNode root) {
         StringBuilder sb = new StringBuilder();
@@ -89,20 +80,18 @@ public class SerializeandDeserializeBinaryTree {
 
     /**
      * DFS
-     * Decodes your encoded data to tree.
-     * @param data
-     * @return
      */
     public TreeNode deserialize2(String data) {
-        final String[] vals = data.split(" ");
+        String[] vals = data.split(" ");
         Queue<String> queue = new ArrayDeque<>(Arrays.asList(vals));
         return preorder(queue);
     }
 
     private TreeNode preorder(Queue<String> queue) {
         String s = queue.poll();
-        if (s.equals("n"))
+        if (s.equals("n")) {
             return null;
+        }
 
         TreeNode root = new TreeNode(Integer.parseInt(s));
         root.left = preorder(queue);

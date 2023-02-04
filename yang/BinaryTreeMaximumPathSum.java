@@ -23,6 +23,8 @@ public class BinaryTreeMaximumPathSum {
         return current;
     }
 
+
+
     private int ans = Integer.MIN_VALUE;
 
     public int sol2(TreeNode root) {
@@ -39,8 +41,25 @@ public class BinaryTreeMaximumPathSum {
         int left  = Math.max(maxPathSumDownFrom(root.left),  0);
         int right = Math.max(maxPathSumDownFrom(root.right), 0);
 
+        // if left and right child are both negative
         ans = Math.max(ans, root.val + left + right);
 
         return root.val + Math.max(left, right);
+    }
+
+
+    public static void main(String[] args) {
+
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.right.left = new TreeNode(5);
+        root.right.right = new TreeNode(6);
+        root.right.right.left = new TreeNode(8);
+        root.right.left.right = new TreeNode(7);
+
+        BinaryTreeMaximumPathSum t = new BinaryTreeMaximumPathSum();
+        System.out.println(t.sol1(root));
     }
 }

@@ -1,29 +1,34 @@
 public class MaximumProductSubarray {
 
     /*
-     * edge case: 0
+     * edge case returns 0
      */
     public int sol1(int[] nums) {
-        assert nums.length > 0;
+        
+        int result = nums[0];
 
         int max    = nums[0];
         int min    = nums[0];
-        int maxAns = nums[0];
 
+        // negative 값이 곱해질 수 있으므로 min/max를 같이 계산해야 된다.
         for (int i = 1; i < nums.length; i++) {
             int tmpMax = max * nums[i];
             int tmpMin = min * nums[i];
+
+            // nums[i], tmpMax, tmpMin에서 최대 값을 구한다.
             max    = Math.max(Math.max(nums[i], tmpMax), tmpMin);
+            // nums[i], tmpMax, tmpMin에서 최소 값을 구한다.
             min    = Math.min(Math.min(nums[i], tmpMax), tmpMin);
-            maxAns = Math.max(max, maxAns);
+            result = Math.max(max, result);
         }
-        return maxAns;
+        return result;
     }
 
     public static void main(String[] args) {
+        MaximumProductSubarray sub = new MaximumProductSubarray();
+
         int[] nums = { 2,3,-2,4 };
 
-        MaximumProductSubarray sub = new MaximumProductSubarray();
         System.out.println(sub.sol1(nums));
     }
 

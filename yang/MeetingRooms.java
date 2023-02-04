@@ -5,11 +5,14 @@ import java.util.List;
 
 public class MeetingRooms {
 
-    public boolean sol1(List<Interval> intvList) {
-        Collections.sort(intvList, Comparator.comparing((Interval itl) -> itl.start));
+    public boolean sol1(List<Interval> list) {
 
-        for (int i = 0; i < intvList.size() - 1; i++) {
-            if (intvList.get(i).end > intvList.get(i+1).start) {
+        // merge sort
+        Collections.sort(list, Comparator.comparing((Interval one) -> one.start));
+
+        for (int i = 0; i < list.size() - 1; i++) {
+
+            if (list.get(i).end > list.get(i+1).start) {
                 return false;
             }
         }
@@ -19,13 +22,13 @@ public class MeetingRooms {
     public static void main(String[] args) {
         MeetingRooms t = new MeetingRooms();
 
-        List<Interval> intervals = new ArrayList<>();
+        List<Interval> list = new ArrayList<>();
         //intervals.add(new Interval(7,10));
         //intervals.add(new Interval(2,4));
-        intervals.add(new Interval(0,30));
-        intervals.add(new Interval(5,10));
-        intervals.add(new Interval(15,20));
+        list.add(new Interval(0,30));
+        list.add(new Interval(5,10));
+        list.add(new Interval(15,20));
 
-        System.out.println(t.sol1(intervals));
+        System.out.println(t.sol1(list));
     }
 }
