@@ -7,7 +7,6 @@ public class ValidAnagram {
         if (s == null || t == null) {
             return false;
         }
-
         if (s.length() != t.length()) {
             return false;
         }
@@ -53,7 +52,6 @@ public class ValidAnagram {
         }
 
         for (char c2 : t.toCharArray()) {
-
             if (map.containsKey(c2)) {
                 if (map.get(c2) == 1) {
                     map.remove(c2);

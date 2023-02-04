@@ -3,17 +3,14 @@ import java.util.Map;
 
 /**
  * 트리의 전위, 중위 순회로 결과를 입력값으로 받아 이진 트리를 구축
- * - 전위의 첫번 째 값은 부모 노드이며 중위 순회 결과를 left 와 right 로 나누는 역할을 한다.
- * - 즉, 전위 순회의 값을 순차적으로 빼면서 중위 순회를 left 와 right 로 나눈다.
+ * - preorder의 첫번째 값은 부모 노드이며 inorder traversal 결과를 left 와 right 로 나누는 역할을 한다.
+ * - 즉, preorder traversal의 값을 순차적으로 빼면서 inorder traversal를 left 와 right 로 나눈다.
  */
 public class ConstructBinaryTreefromPreorderandInorderTraversal {
 
     /**
      * preorder 배열로 root를 만들고
      * inorder 배열로 left, right를 만든다.
-     * @param preorder
-     * @param inorder
-     * @return
      */
     public TreeNode sol1(int[] preorder, int[] inorder) {
 
@@ -55,6 +52,8 @@ public class ConstructBinaryTreefromPreorderandInorderTraversal {
 
         TreeNode root = new TreeNode(rootVal);
         // 마지막 node라면 left 또는 right가 null인 TreeNode를 return 한다.
+        // preorder배열의 start와 end에 leftSize를 더하여 left와 right를 나눈다.
+        // inorder 배열은 rootInIndex를 사용하여 left와 right를 만든다.
         root.left  = build(preorder,
                                preStart + 1,
                                preStart + leftSize,

@@ -44,11 +44,13 @@ public class WordSearch2 {
         str = str + board[i][j];
         System.out.println("dfs) str=" + str);
         
+        // str로 시작하는 단어가 없으면 return
         if (!this.trie.startsWith(str)) {
             System.out.println("dfs) not start with str=" + str);
             return;
         }
         
+        // tri에 포함되어 있으면 add
         if (this.trie.search(str)) {
             System.out.println("dfs) add to trie, str=" + str);
             result.add(str);
@@ -62,22 +64,22 @@ public class WordSearch2 {
         dfs(board, visited, str, i, j - 1);
         dfs(board, visited, str, i, j + 1);
         
-        // 왜 다시 reset 하지? -> i, j에 대해서 검색이 끝나고 false로 reset해야
+        // i, j에 대해서 검색이 끝나고 다시 false로 set해야
         // 다른 i*, j*에 대해서 검색을 시작할 수 있기 때문에
         visited[i][j] = false;
         System.out.println("str=" +str +", board[" +i +"][" +j +"]=" +board[i][j] +", visited[" +i +"][" +j +"]=" +visited[i][j]);
     }
 
     public static void main(String[] args) {
-
-        char[][] board = { { 'o', 'a', 'a', 'n' },
-                { 'e', 't', 'a', 'e' },
-                { 'i', 'h', 'k', 'r' },
-                { 'i', 'f', 'l', 'v' } };
-
-        String[] words = { "oath", "pea", "eat", "rain" };
-
         WordSearch2 t = new WordSearch2();
+
+        char[][] board = {{ 'o', 'a', 'a', 'n' },
+                          { 'e', 't', 'a', 'e' },
+                          { 'i', 'h', 'k', 'r' },
+                          { 'i', 'f', 'l', 'v' }};
+
+        String[] words = {"oath", "pea", "eat", "rain"};
+
 
         System.out.println(t.findWords(board, words));
     }

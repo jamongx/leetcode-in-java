@@ -13,19 +13,22 @@ public class PalindromicSubstrings {
 
         boolean[][] dp = new boolean[n][n];
 
+        // single character is a palindrome
         for (int i = 0; i < n; i++) {
             dp[i][i] = true;
         }
 
-
-        for (int L = 2; L <= n; L++) {
+        // 문자열의 길이
+        for (int len = 2; len <= n; len++) {
             
-            System.out.println("L=" +L);
-            for (int i = 0; i + L <= n; i++) {
+            System.out.println("len=" +len);
+            // i + len <= n -> len이 2라면 문자열의 길이가 2니까 n 끝까지 갈수 없다
+            for (int i = 0; i <= n - len; i++) {
 
-                int j = i + L - 1;
-                // 길이가 2개인 substring
-                if (L == 2) {
+                // i보다 len만큼 길때
+                int j = i + len - 1;
+
+                if (len == 2) {
                     dp[i][j] = s.charAt(i) == s.charAt(j);
                 }
                 else if (s.charAt(i) == s.charAt(j) && dp[i + 1][j - 1]) {
@@ -55,20 +58,29 @@ public class PalindromicSubstrings {
      * @return
      */
     public int sol2(String s) {
-        int ans = 0;
+        System.out.println("s=" +s);
+        int result = 0;
 
-        for (int i = 0; i < s.length(); ++i) {
-            ans += extendPalindromes(s, i, i);
-            ans += extendPalindromes(s, i, i + 1);
+        for (int i = 0; i < s.length(); i++) {
+            // 홀수 길이의 s
+            result += extendPalindromes(s, i, i);
+            // 짝수 길이의 s
+            result += extendPalindromes(s, i, i + 1);
         }
 
-        return ans;
+        return result;
     }
 
     private int extendPalindromes(String s, int left, int right) {
         int count = 0;
 
-        while ( 0 <= left && right < s.length() && s.charAt(left) == s.charAt(right)) {
+        while (0 <= left
+               && right < s.length()
+               && s.charAt(left) == s.charAt(right)) {
+            
+            // left == right면 substring은 ""를 return한다.
+            System.out.println("s.charAt(" +left +")=" +s.charAt(left) +", s.charAt(" +right +")=" +s.charAt(right));
+
             count++;
             left--;
             right++;
@@ -80,10 +92,9 @@ public class PalindromicSubstrings {
     public static void main(String[] args) {
         PalindromicSubstrings t = new PalindromicSubstrings();
 
-        String s = "pwwkew";
-        //String s = "abcabcbb";
+        //String s = "pwwkew";
+        String s = "abcabcbb";
         //String s = "bbbbb";
-        int k = 1;
 
         System.out.println(t.sol1(s));
 

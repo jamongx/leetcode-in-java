@@ -53,6 +53,7 @@ public class Utils {
         }
     }
 
+    // https://www.baeldung.com/java-print-binary-tree-diagram
     public static void printBinaryTree(TreeNode root) {
         if (root != null) {
             System.out.println(root.val);
@@ -61,5 +62,7 @@ public class Utils {
         }
     }
 
-
+    public static int windowSize(int l, int r) {
+        return (r - l + 1);
+    }
 }

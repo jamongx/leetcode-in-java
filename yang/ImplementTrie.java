@@ -1,75 +1,64 @@
-import java.util.Map;
 
 public class ImplementTrie {
 
-    private TrieNode root = new TrieNode();
+    protected TrieNode root = new TrieNode();
 
     public ImplementTrie() {
     }
 
-    /**
-     * Inserts a word into the trie
-     * @param word
-     */
+    // Inserts a word into the trie
     public void insert(String word) {
-
-        // 시작 trie는 root 이다.
-        Map<Character, TrieNode> children = root.children;
+        TrieNode node = root; // 시작 trie는 root 이다.
 
         // loop를 돌면서 children은 sub trie로 계속 이어진다.
-        for (int i = 0; i < word.length(); i++) {
+        for(char ch : word.toCharArray()) {
 
-            char c = word.charAt(i);
-            if (!children.containsKey(c)) {
-                children.put(c, new TrieNode(c));
+            if (!node.containsKey(ch)) {
+                node.put(ch, new TrieNode());
             }
 
-            TrieNode trie = children.get(c);
-
-            // 연달아서 들어가야 하기 때문에
-            children = trie.children;
-
-            // 단어의 마지막 문자에 isLeaf를 true를 설정한다.
-            if (i == word.length() - 1) {
-                trie.isLeaf = true;
-            }
+            // put을 하기 때문에, null exception은 발생하지 않는다.
+            node = node.get(ch);
         }
+        // 단어의 마지막 문자에 isLeaf를 true를 설정한다.
+        node.setEnd();
     }
 
-    /**
-     * Returns if the word is in the trie
-     * @param word
-     * @return
-     */
-    public boolean search(String word) {
-        TrieNode trie = searchNode(word);
-        return (trie != null && trie.isLeaf);
-    }
+    // search와 startWith에서 call한다.
+    public TrieNode searchNode(String word) {
+        TrieNode node = root; // 시작 trie는 root 이다.
 
-    /**
-     * Returns if there is any word in the trie that starts with the given prefix
-     * @param prefix
-     * @return
-     */
-    public boolean startsWith(String prefix) {
-        return (searchNode(prefix) != null);
-    }
+        for(char ch : word.toCharArray()) {
 
-
-    public TrieNode searchNode(String str) {
-
-        Map<Character, TrieNode> children = root.children;
-
-        TrieNode trie = null;
-        for(char c : str.toCharArray()) {
-            if (!children.containsKey(c)) {
-                return null;
+            if (node.containsKey(ch)) {
+                node = node.get(ch);
             }
             else {
-                trie = children.get(c);
-                children = trie.children;
+                return null;
             }
         }
-        return trie;
+        return node;
+    }
+
+    // Returns if the word is in the trie
+    public boolean search(String word) {
+        TrieNode node = searchNode(word);
+        return (node != null && node.isEnd());
+    }
+
+    // Returns if there is any word in the trie that starts with the given prefix
+    public boolean startsWith(String prefix) {
+        TrieNode node = searchNode(prefix);
+        return (node != null);
+    }
+
+    public static void main(String[] args) {
+        ImplementTrie trie = new ImplementTrie();
+        trie.insert("apple");
+        System.out.println("search->apple=" +trie.search("apple"));
+        System.out.println("search->app=" +trie.search("app"));
+        System.out.println("startWith->app=" +trie.startsWith("app"));
+        trie.insert("app");
+        System.out.println("search->app=" +trie.search("app"));
     }
 }

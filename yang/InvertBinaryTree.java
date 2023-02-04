@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class InvertBinaryTree {
 
@@ -15,20 +16,9 @@ public class InvertBinaryTree {
         return root;
     }
 
-    public TreeNode sol2(TreeNode root) {
-        if (root == null) {
-            return root;
-        }
-        sol2(root.left);
-        sol2(root.right);
-        TreeNode t = root.left;
-        root.left = root.right;
-        root.right = t;
-        return root;
-    }
 
-    public TreeNode sol3(TreeNode root) {
-        LinkedList<TreeNode> queue = new LinkedList<>();
+    public TreeNode sol2(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
         if (root != null) {
             queue.add(root);
         }

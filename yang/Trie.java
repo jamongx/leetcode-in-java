@@ -1,45 +1,37 @@
-/*public class TrieNode4 {
-    public TrieNode4[] children = new TrieNode4[26];
-    public String item = "";
-}*/
-
 public class Trie extends ImplementTrie {
 
-    /*public TrieNode4 root = new TrieNode4();
-
-    public void insert(String word) {
-        TrieNode4 node = root;
-        for (char c : word.toCharArray()) {
-            if (node.children[c - 'a'] == null) {
-                node.children[c - 'a'] = new TrieNode4();
-            }
-            node = node.children[c - 'a'];
-        }
-        node.item = word;
+    /**
+     * search a prefix or whole key in trie and
+     * returns the node where search ends
+     */
+    public boolean search(String word) {
+        return dfs(word, root);
     }
 
-    public boolean search(String word) {
-        TrieNode4 node = root;
-        for (char c : word.toCharArray()) {
-            if (node.children[c - 'a'] == null)
-                return false;
-            node = node.children[c - 'a'];
-        }
-        if (node.item.equals(word)) {
-            return true;
-        } else {
+    private boolean dfs(String word, TrieNode node) {
+        if (node == null) {
             return false;
         }
+
+        if (word.length() == 0) {
+            return node.isEnd();
+        }
+
+        char curr = word.charAt(0);
+        if (curr == '.') {
+            // any char 이므로 26 loop를 돌면서 각각 recursion을 실행한다r
+            for (int i = 0; i < 26; i++) {
+                char c = (char) ('a' + i);
+                if (dfs(word.substring(1), node.get(c))) {
+                    return true;
+                }
+            }
+        } else if (node.containsKey(curr)) {
+            return dfs(word.substring(1), node.get(curr));
+        }
+        return false;
     }
 
-    public boolean startsWith(String prefix) {
-        TrieNode4 node = root;
-        for (char c : prefix.toCharArray()) {
-            if (node.children[c - 'a'] == null)
-                return false;
-            node = node.children[c - 'a'];
-        }
-        return true;
-    }*/
+
 }
 
