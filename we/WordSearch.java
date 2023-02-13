@@ -12,7 +12,7 @@ public class WordSearch {
 	private boolean dfs(char[][] board, String word, int i, int j, int s) {
 		if (i < 0 || i == board.length || j < 0 || j == board[0].length)
 			return false;
-		if (board[i][j] != word.charAt(s) || board[i][j] == '*')
+		if (board[i][j] != word.charAt(s) || board[i][j] == '*') // '*'는 이전 char 위치
 			return false;
 		if (s == word.length() - 1)
 			return true;

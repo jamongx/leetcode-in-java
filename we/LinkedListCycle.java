@@ -9,6 +9,8 @@ public class LinkedListCycle {
 		while (fast != null && fast.next != null) {
 			slow = slow.next;
 			fast = fast.next.next;
+            System.out.println(slow.val +" "+ fast.val);
+
 			if (slow == fast)
 				return true;
 		}
