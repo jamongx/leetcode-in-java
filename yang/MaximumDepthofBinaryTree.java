@@ -14,16 +14,21 @@ public class MaximumDepthofBinaryTree {
 
         int depth = 0;
         while (!queue.isEmpty()) {
+            // 1. root -> null 
             TreeNode current = queue.poll();
 
+            // 2. curr = root, null이 나오면 level의 끝을 의미한다.
             if (current == null) {
                 depth++;
                 if (!queue.isEmpty()) {
+                    // 4. q = left -> right -> null
+                    // binary tree이기 때문에 가능하다
                     queue.offer(null);
                 }
                 continue;
             }
 
+            // 3. q = null -> left -> right
             if (current.left != null) {
                 queue.offer(current.left);
             }

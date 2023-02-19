@@ -2,6 +2,7 @@ public class LongestPalindromicSubstring {
 
     /**
      * Dynamic Programming
+     * PalindromicSubstrings과 같은 알고리즘을 사용한다.
      * TC: O(n^2)
      * SC: O(n^2)
      */
@@ -10,13 +11,24 @@ public class LongestPalindromicSubstring {
             return s;
         }
 
-        int len = s.length();
+        int n = s.length();
         int maxLen = 1;
-        boolean[][] dp = new boolean[len][len];
+        boolean[][] dp = new boolean[n][n];
+        // abcd
+        // dp[i][j] -> abcd -> 
+        // dp[i][j] -> bc -> dp[1][2]
+        // abcd dp[0][3] -> char(0) == char(3) && dp[1][2] == true
 
         String longest = null;
-        for (int l = 0; l < len; l++) { // length of palindrome substring
-            for (int i = 0; i < (len - l); i++) {
+
+        // length of palindrome substring
+        // 0, 1, 2, 3, 4
+        for (int l = 0; l < n; l++) {
+
+            // len = 2라면 (n - 2)까지 loop 반복
+            // abcd
+            // ab / bc / cd /
+            for (int i = 0; i < (n - l); i++) {
 
                 int j = i + l; // end of substring
 
@@ -41,11 +53,7 @@ public class LongestPalindromicSubstring {
      * SC: O(1)
      */
     public String sol2(String s) {
-        if (s.isEmpty()) {
-            return null;
-        }
-
-        if (s.length() == 1) {
+        if (s == null || s.length() <= 1) {
             return s;
         }
 
@@ -54,13 +62,13 @@ public class LongestPalindromicSubstring {
         for (int i = 0; i < s.length(); i++) {
 
             // odd length, get longest palindrome with center of i
-            String tmp = helper(s, i, i);
+            String tmp = extendPalindromes(s, i, i);
             if (tmp.length() > longest.length()) {
                 longest = tmp;
             }
 
             // even length, get longest palindrome with center of i, i+1
-            tmp = helper(s, i, i + 1);
+            tmp = extendPalindromes(s, i, i + 1);
             if (tmp.length() > longest.length()) {
                 longest = tmp;
             }
@@ -73,7 +81,7 @@ public class LongestPalindromicSubstring {
      * Given a center, either one letter or two letter,
      * Find longest palindrome
      */
-    public String helper(String s, int begin, int end) {
+    public String extendPalindromes(String s, int begin, int end) {
         // begin이 0과 같거나 크고
         // end가 s의 길이보다 작거나 같고
         // s(begin)과 s(end)와 같다면 -> loop를 돈다.
@@ -142,9 +150,7 @@ public class LongestPalindromicSubstring {
     public static void main(String[] args) {
         LongestPalindromicSubstring t = new LongestPalindromicSubstring();
         String s = "babad";
-
         System.out.println(t.sol3(s));
-        
     }
 
 }

@@ -6,9 +6,6 @@ public class LongestRepeatingCharacterReplacement {
     /**
      * TC: O(n)
      * SC: O(128)=O(1)
-     * @param s
-     * @param k
-     * @return
      */
     public int sol1(String s, int k) {
         // max sliding window size

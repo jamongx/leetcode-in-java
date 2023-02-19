@@ -10,8 +10,8 @@ public class GroupAnagrams {
      * https://walkccc.me/LeetCode/problems/0049/
      * Time: O(nklog⁡k), where n = ∣strs∣ and k = ∣strs[i]∣
      * Space: O(nk)
-     * @param strs
-     * @return
+     * 문자열 (str)를 char 배열로 convert 해준다음에 알파벳 순으로 정렬한다.
+     * 그리고 map의 key값으로 str을 value list에 add 한다.
      */
     public List<List<String>> sol1(String[] strs) {
 

@@ -6,54 +6,62 @@ public class MinimumWindowSubstring {
     // s = "ADOBECODEBANC"
     // t = "ABC"
     public String sol1(String s, String t) {
+        // window가 유효하다
+        // 1. required가 0이다.
+        // 2. count 배열의 모든 값들이 0이다.
 
+        // 먼저 t를 기준으로 count++
+        // 최적화를 한다면 줄일수 있다.
         int[] count = new int[128];
         for (char c : t.toCharArray()) {
-            count[c]++;
+            count[c]++; // t char의 개수를 계산한다
         }
 
-        int bestLeft = -1; // left location
+        int bestLeft  = -1;             // left location
+        int minLength = s.length() + 1; // s->len 1일때는 +1이 필요하다
+        int required  = t.length();     // t->len
 
-        // 1자리일때는 +1이 필요하다
-        int minLength = s.length() + 1; // src len + 1
-
-        int required = t.length(); // target len
+        // s를 기준으로 loop -> 오른쪽 pointer
+        // count의 배열은 t의 char 위치의 값이 > 0 상태이다.
 
         for (int l = 0, r = 0; r < s.length(); r++) {
 
+            // right pointer move 
+            // t의 char과 일치한 s의 char count값이 0크거나 같으면
+            // -> 포함된다는 뜻이다.
+            // right pointer의 이동은 count를 감소시킨다.
+            // t와 겹치지 않으면 0보다 작을것이다.
+            // 그래서 0보다 크거나 같으면 겹치는것이니까 required를 --
             if (--count[s.charAt(r)] >= 0) {
                 required--;
-                System.out.println("required--=" +required);
+                Utils.printArray(count);
             }
 
+            // 내부 loop windows가 유효할때, left를 증가시켜서
+            // 가장 작은 window를 찾기 위함
+            // When we found a valid window, move left to find smaller window.
             while (required == 0) {
 
+                // If the window's substring is shorter, update the res
+                // 더 작은 window를 찾았다.
                 if (minLength > Utils.windowSize(l, r)) {
                     bestLeft = l;
                     minLength = Utils.windowSize(l, r);
-                    System.out.println("bestLeft=" +bestLeft +", minLength=" +minLength);
                 }
 
+                // left pointer move 
+                // left pointer의 이동은 count를 증가시킨다.
+                // t의 char과 일치한 s의 char count값이 0크거나 같으면
+                // 겹치지 않으면 right가 지나가면 0보다 작은 값이다.
+                // left가 이 내부 loop에서 지나가면 
                 if (++count[s.charAt(l++)] > 0) {
                     required++;
-                    System.out.println("required++=" +required);
+                    Utils.printArray(count);
                 }
             }
         }
         
         return bestLeft == -1 ? "" : s.substring(bestLeft, bestLeft + minLength);
-    }
-
-    public static void main(String[] args) {
-        MinimumWindowSubstring min = new MinimumWindowSubstring();
-
-        //String s = "ADOBECODEBANC";
-        //String t = "ABC";
-        String s = "a";
-        String t = "aa";
-
-        System.out.println(min.sol1(s, t));
-        //System.out.println(min.sol2(s, t));
     }
 
 
@@ -106,5 +114,16 @@ public class MinimumWindowSubstring {
         return result;
     }
 
+    public static void main(String[] args) {
+        MinimumWindowSubstring min = new MinimumWindowSubstring();
+
+        String s = "ADOBECODEBANC";
+        String t = "ABC";
+        //String s = "a";
+        //String t = "aa";
+
+        System.out.println(min.sol1(s, t));
+        //System.out.println(min.sol2(s, t));
+    }
 
 }

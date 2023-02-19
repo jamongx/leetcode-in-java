@@ -28,25 +28,29 @@ public class NumberofConnectedComponentsinanUndirectedGraph {
             map.get(edge[1]).add(edge[0]);
         }
         
-        int ans = 0;
+
+        int result = 0;
         Set<Integer> visited = new HashSet<>();
+        // 모든 점 (node)에 대해서 loop를 돌려준다.
         for (int i = 0; i < n; i++) {
-            // visited(set) 에 포함되어 있다면 false를 return한다.
+            // add가 된다면 true 이미 set에 있으면 false
             if (visited.add(i)) {
                 dfs(i, map, visited);
-                ++ans;
+                ++result;
             }
         }
 
-        return ans;
+        return result;
     }
 
-    private void dfs(int i,
-                     Map<Integer, List<Integer>> map,
-                     Set<Integer> visited) {
+    // i와 연결된 j(node)들을 set에 넣어준다.
+    private void dfs(int i, Map<Integer, List<Integer>> map, Set<Integer> visited) {
 
+        // i와 연결된 j(node)들로 loop를 돌린다.
         for (int j : map.get(i)) {
+            // add가 된다면 true 이미 set 에 있으면 false
             if (visited.add(j)) {
+                // j와 연결된 k(node)들을 set에 넣어준다.
                 dfs(j, map, visited);
             }
         }
@@ -72,21 +76,19 @@ public class NumberofConnectedComponentsinanUndirectedGraph {
         }
 
         // use queue to traverse the graph
-        int ans = 0;
+        int result = 0;
         Set<Integer> visited = new HashSet<>();
         for (int i = 0; i < n; ++i) {
-            if (visited.add(i)) {
+            if (visited.add(i)) { // add가 되면 result++이 된다.
                 bfs(i, map, visited);
-                ++ans;
+                ++result;
             }
         }
 
-        return ans;
+        return result;
     }
 
-    private void bfs(int i,
-                     Map<Integer, List<Integer>> map,
-                     Set<Integer> visited) {
+    private void bfs(int i, Map<Integer, List<Integer>> map, Set<Integer> visited) {
 
         Queue<Integer> queue = new ArrayDeque<>(Arrays.asList(i));
         while (!queue.isEmpty()) {
@@ -101,6 +103,20 @@ public class NumberofConnectedComponentsinanUndirectedGraph {
         }
     }
 
+
+    /**
+     * https://walkccc.me/LeetCode/problems/0323/
+     * UF
+     */
+    public int sol3(int n, int[][] edges) {
+        UnionFind uf = new UnionFind(n);
+
+        for (int[] edge : edges) {
+            uf.unionByRank(edge[0], edge[1]);
+        }
+
+        return uf.getCount();
+    }
 
     public static void main(String[] args) {
         NumberofConnectedComponentsinanUndirectedGraph t = new NumberofConnectedComponentsinanUndirectedGraph();

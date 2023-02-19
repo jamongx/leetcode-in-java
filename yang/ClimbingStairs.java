@@ -2,8 +2,6 @@ public class ClimbingStairs {
 
     /**
      * brute Force (Recursive) Approach
-     * @param n
-     * @return
      */
     public int sol1(int n) {
         if (n < 2) {
@@ -16,8 +14,9 @@ public class ClimbingStairs {
 
     /**
      * dp[i] := # of distinct ways to climb to i-th stair
-     * @param n
-     * @return
+     * 2D DP
+     * TC: O(n)
+     * SC: O(n)
      */
     public int sol2(int n) {
         int[] dp = new int[n + 1];
@@ -36,8 +35,9 @@ public class ClimbingStairs {
 
     /**
      * without extra memory
-     * @param n
-     * @return
+     * 1D DP
+     * TC: O(n)
+     * SC: O(1)
      */
     public int sol3(int n) {
         int dp0 = 1; // int dp0 = 0; -> 0부터 시작하려면 int i의 값을 바꿔야 한다.

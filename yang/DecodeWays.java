@@ -46,12 +46,11 @@ public class DecodeWays {
                     // 20는 이전 dp[i-1]의 값을 dp[i+1]로 던진다.
                     if (curr == '0') {
                         dp[i + 1] = dp[i - 1];
-                    } 
+                    }
                     // prev+curr -> 20 현재 문자열은 의미가 없다.
                     else if (curr <= '6') {
                         dp[i + 1] = dp[i - 1] + dp[i];
-                    } 
-                    else {
+                    } else {
                         dp[i + 1] = dp[i];
                     }
                     break;
@@ -62,7 +61,7 @@ public class DecodeWays {
                     break;
             }
 
-            System.out.println(i +"-th loop, " +"(prev:" + prev + ") + (curr:" +curr +")");
+            System.out.println(i + "-th loop, " + "(prev:" + prev + ") + (curr:" + curr + ")");
             System.out.println("dp[" + (i - 1) + "] " + dp[i - 1] + ", dp[" + (i) + "] " + dp[i] + ", dp[" + (i + 1)
                     + "] " + dp[i + 1]);
         }
@@ -70,31 +69,34 @@ public class DecodeWays {
         return dp[s.length()];
     }
 
-    public int sol2(String input) {
-        // 문자열의 길이가 0 또는 첫번째 문자가 0
-        if (input.length() == 1 || input.charAt(0) == '0') {
+
+    // sol1의 dp 배열을 없앤 최적화
+    public int sol2(String s) {
+        // s의 길이가 0 또는 첫번째 문자가 0
+        if (s.length() == 1 || s.charAt(0) == '0') {
             return 0;
         }
 
-        // input[0]
-        int prev = 1; // input[1]을 계산할때 필요한 prev(input[0] 한자리 숫자 조합) 값이다.
-        int curr = 1; // input[0] 한자리로 만들수 있는 조합수
-        // int result = prev;
-        int result = curr; // input[0] 한자리로 만들수 있는 조합수 (curr와 같다)
+        int prev = 1; // s[1]을 계산할때 필요한 prev(s[0] 한자리 숫자 조합) 값이다.
+        int curr = 1; // s[0] 한자리로 만들수 있는 조합수
+        int result = curr; // s[0] 한자리로 만들수 있는 조합수 (curr와 같다)
 
-        for (int i = 1; i < input.length(); i++) {
+        for (int i = 1; i < s.length(); i++) {
 
             // i 문자가 0인데 i-1 문자가 1과 2가 아니면 return
-            if (input.charAt(i) == '0' && input.charAt(i - 1) != '1' && input.charAt(i - 1) != '2') {
+            if (s.charAt(i) == '0'
+             && s.charAt(i - 1) != '1'
+             && s.charAt(i - 1) != '2') {
                 return 0;
             }
 
             // i 문자가 0 이면
-            if (input.charAt(i) == '0') {
+            if (s.charAt(i) == '0') {
                 result = prev;
             }
             // (i-1)X10 + (i) < 27 이고 i-1이 '0'이 아니면
-            else if ((input.charAt(i - 1) - '0') * 10 + (input.charAt(i) - '0') < 27 && input.charAt(i - 1) != '0') {
+            else if ((s.charAt(i - 1) - '0') * 10 + (s.charAt(i) - '0') < 27
+                 && s.charAt(i - 1) != '0') {
                 result = prev + curr;
             }
 
@@ -104,29 +106,37 @@ public class DecodeWays {
         return result;
     }
 
+
     /**
      * 역방향으로 순회 한다.
-     * @param s
-     * @return
+     * dp[i]는 s[i:n) 조합 가능한 알파벳 조합의  개수
+     * dp[n] = dp[n-1] + dp[n-2]
      */
     public int sol3(String s) {
         int n = s.length();
 
         // dp[i] := # of ways to decode s[i..n)
-        // s[i]에서 s[n]까지 조합 가능한 개수
         int[] dp = new int[n + 1];
         dp[n] = 1; // ""
-        if(isValid(s.charAt(n - 1))) {
+
+        Utils.printArray(dp);
+
+        if (isValid(s.charAt(n - 1))) {
             dp[n - 1] = 1; // 초기 값이 0 이므로
         }
 
+        Utils.printArray(dp);
+
         for (int i = n - 2; i >= 0; i--) {
+
             if (isValid(s.charAt(i))) {
                 dp[i] += dp[i + 1];
             }
+            Utils.printArray(dp);
             if (isValid(s.charAt(i), s.charAt(i + 1))) {
                 dp[i] += dp[i + 2];
             }
+            Utils.printArray(dp);
         }
 
         return dp[0];
@@ -141,15 +151,14 @@ public class DecodeWays {
     }
 
 
-
     public static void main(String[] args) {
         DecodeWays t = new DecodeWays();
 
+        //            01234
         String one = "12123";
 
-        //System.out.println(t.sol1(one));
-        //System.out.println(t.sol2(one));
+        // System.out.println(t.sol1(one));
+        // System.out.println(t.sol2(one));
         System.out.println(t.sol3(one));
-    }    
-
+    }
 }

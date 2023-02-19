@@ -39,21 +39,23 @@ public class HouseRobber2 {
     }
 
     private int rob2(int[] nums, int l, int r) {
-        int prev1 = 0; // dp[i - 1]
-        int prev2 = 0; // dp[i - 2]
+        int dp_1 = 0; // dp[i - 1]
+        int dp_2 = 0; // dp[i - 2]
 
         for (int i = l; i <= r; i++) {
-            int dp = Math.max(prev1, prev2 + nums[i]);
-            prev2  = prev1;
-            prev1  = dp;
+            int dp = Math.max(dp_1, dp_2 + nums[i]);
+            dp_2  = dp_1;
+            dp_1  = dp;
         }
-        return prev1;
+        return dp_1;
     }
 
 
     public static void main(String[] args) {
         HouseRobber2 t = new HouseRobber2();
+
         int[] nums = { 2, 7, 9, 3, 1 };
+
         System.out.println( t.sol1(nums));
     }
    

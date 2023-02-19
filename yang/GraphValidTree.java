@@ -56,7 +56,7 @@ public class GraphValidTree {
     public boolean hasCycle(int curr, int parent,
                           Map<Integer, List<Integer>> map,
                           boolean[] visited) {
-
+        // 방문한 것을 다시 방문하면 cycle이 있는것이다.
         if (visited[curr]) {
             return true;
         }
@@ -65,7 +65,7 @@ public class GraphValidTree {
         for (int i : map.get(curr)) {
 
             // (i != parent) -> curr가 parent가 아니고
-            // hasCycle(i, curr) 가 false이면
+            // hasCycle(i, curr) 가 true이면
             // curr -> parent
             if (i != parent && hasCycle(i, curr, map, visited)) {
                 return true;
@@ -97,7 +97,7 @@ public class GraphValidTree {
         Set<Integer> visited = new HashSet<>();
         LinkedList<Integer> queue = new LinkedList<>();
 
-        queue.offer(0);
+        queue.offer(0); // dummy
 
         while (!queue.isEmpty()) {
 
@@ -125,9 +125,9 @@ public class GraphValidTree {
 
     /**
      * https://walkccc.me/LeetCode/problems/0261/
-     * Approach 2: UF
-     * Time: O(nlog⁡∗n)
-     * space: O(n)
+     * UF
+     * TC: O(nlog⁡∗n)
+     * SC: O(n)
      */
     public boolean sol3(int n, int[][] edges) {
         if (n == 0 || edges.length != n - 1) {

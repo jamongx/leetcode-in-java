@@ -11,29 +11,30 @@ public class NonOverlappingIntervals {
         }
 
         // merge sort: o(nlogn)
-        // end 값으로 정렬을 해야 된다.
+        // (중요) End 값으로 정렬 한다.
         Collections.sort(list, Comparator.comparing((Interval one) -> one.end));
         System.out.println("sort=" +list);
 
-        int count = 0;
-        Interval temp = list.get(0);
-        System.out.println("temp[0]=" +temp);
+        int result = 0;
+        Interval prev = list.get(0);
+        System.out.println("temp[0]=" +prev);
 
-        // 겹치지 않는 것을 이어서 가장 긴 것을 만든다로 문제를 전환한다.
+        // 겹치지 않는 interval 들을 붙여서 하나의 interval을 만든다.
         // 겹치는 것은 count를 해서 return한다.
         for (int i = 1; i < list.size(); i++) {
             Interval curr = list.get(i);
-            if (curr.start >= temp.end) {
-                temp.end = curr.end;
+            if (prev.end <= curr.start) {
+                prev.end = curr.end;
             } else {
                 System.out.println("remove=" +curr);
-                count++;
+                result++;
             }
-            System.out.println("temp[" +i +"]=" +temp);
+            System.out.println("temp[" +i +"]=" +prev);
         }
-        return count;
+        return result;
     }
     
+
     public static void main(String[] args) {
         NonOverlappingIntervals t = new NonOverlappingIntervals();
 

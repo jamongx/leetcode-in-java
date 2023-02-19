@@ -4,11 +4,9 @@ public class UniquePaths {
 
     /**
      * Approach 1: 2D DP
+     * Bottom-up Approach (Tabulation)
      * TC: O(mn)
      * SC: O(mn)
-     * @param m
-     * @param n
-     * @return
      */
     public int sol1(int m, int n) {
         // dp[i][j] := unique paths from (0, 0) to (i, j)
@@ -20,19 +18,49 @@ public class UniquePaths {
                 dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
             }
         }
+
+        // m x n 배열 -> [m - 1][n - 1] 마지막
         return dp[m - 1][n - 1];
     }
 
+    /**
+     * Approach 1: 2D DP
+     * Top-down Approach (Memoization)
+     * TC: O(mn)
+     * SC: O(mn)
+     */
+    public int sol2(int m, int n) {
+        int[][] mem = new int[m][n];
+
+        // init with -1 value
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                mem[i][j] = -1;
+            }
+        }
+
+        return helper(mem, m - 1, n - 1);
+    }
+
+    private int helper(int[][] mem, int m, int n) {
+        // edge has only one path
+        if (m == 0 || n == 0) {
+            mem[m][n] = 1;
+            return 1;
+        }
+        if (mem[m][n] != -1) {
+            return mem[m][n];
+        }
+        mem[m][n] = helper(mem, m, n - 1) + helper(mem, m - 1, n);
+        return mem[m][n];
+    }
 
     /**
      * Approach 2: 1D DP 
      * TC: O(mn)
      * SC: O(n)
-     * @param m
-     * @param n
-     * @return
      */
-    public int sol2(int m, int n) {
+    public int sol3(int m, int n) {
         int[] dp = new int[n];
         Arrays.fill(dp, 1);
 
@@ -53,5 +81,6 @@ public class UniquePaths {
 
         System.out.println(t.sol1(m, n));
         System.out.println(t.sol2(m, n));
+        System.out.println(t.sol3(m, n));
     }    
 }

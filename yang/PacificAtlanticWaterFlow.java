@@ -9,25 +9,25 @@ public class PacificAtlanticWaterFlow {
     /**
      * https://walkccc.me/LeetCode/problems/0417/ 
      * DFS
-     * @param heights
-     * @return
      */
     public List<List<Integer>> sol1(int[][] heights) {
 
-        final int m = heights.length;
-        final int n = heights[0].length;
+        int m = heights.length;
+        int n = heights[0].length;
         
         boolean[][] seenP = new boolean[m][n];
         boolean[][] seenA = new boolean[m][n];
         
         for (int i = 0; i < m; ++i) {
-            dfs(heights, i, 0, 0, seenP);
-            dfs(heights, i, n - 1, 0, seenA);
+            // i, j, height
+            dfs(heights, i,     0, 0, seenP); // pacific -> east 모서리
+            dfs(heights, i, n - 1, 0, seenA); // atlantic -> west 모서리
         }
         
         for (int j = 0; j < n; ++j) {
-            dfs(heights, 0, j, 0, seenP);
-            dfs(heights, m - 1, j, 0, seenA);
+            // i, j, height
+            dfs(heights, 0,     j, 0, seenP); // pacific -> north 모서리
+            dfs(heights, m - 1, j, 0, seenA); // atlantic -> south 모서리
         }
         
         // seenP와 seenA가 모두 true이면 list에 저장하여 return한다.
@@ -43,15 +43,16 @@ public class PacificAtlanticWaterFlow {
     }
 
     private void dfs(int[][] heights, int i, int j, int h, boolean[][] seen) {
-        if (i < 0 || i == heights.length || j < 0 || j == heights[0].length) {
+        if (i < 0 || i == heights.length
+         || j < 0 || j == heights[0].length) {
             return;
         }
 
         if (seen[i][j] || heights[i][j] < h) {
             return;
         }
-
-        seen[i][j] = true;
+        
+        seen[i][j] = true;// heights[i][j] >= h가 되어야 물이 흐른다.
         dfs(heights, i + 1, j, heights[i][j], seen); // east
         dfs(heights, i - 1, j, heights[i][j], seen); // west
         dfs(heights, i, j + 1, heights[i][j], seen); // south
@@ -59,6 +60,7 @@ public class PacificAtlanticWaterFlow {
     }
 
 
+    // TODO 동서남북 포함해서 Cell Class를 가독성 높에 바꿀수 있을것 같다.
     class Cell {
         int i;
         int j;
@@ -71,8 +73,6 @@ public class PacificAtlanticWaterFlow {
     /**
      * https://walkccc.me/LeetCode/problems/0417/ 
      * BFS
-     * @param heights
-     * @return
      */
     public List<List<Integer>> sol2(int[][] heights) {
 
@@ -86,15 +86,15 @@ public class PacificAtlanticWaterFlow {
         Queue<Cell> qA = new ArrayDeque<>();
 
         for (int i = 0; i < m; ++i) {
-            qP.offer(new Cell(i, 0));
-            qA.offer(new Cell(i, n - 1));
+            qP.offer(new Cell(i, 0)); // pacific, east
+            qA.offer(new Cell(i, n - 1)); // altlantic, west
             seenP[i][0] = true;
             seenA[i][n - 1] = true;
         }
         
         for (int j = 0; j < n; ++j) {
-            qP.offer(new Cell(0, j));
-            qA.offer(new Cell(m - 1, j));
+            qP.offer(new Cell(0, j)); // pacific, north
+            qA.offer(new Cell(m - 1, j)); // altlantic, south
             seenP[0][j] = true;
             seenA[m - 1][j] = true;
         }
@@ -142,6 +142,7 @@ public class PacificAtlanticWaterFlow {
                     continue;
                 }
 
+                // x, y 지점으로 물이 넘치므로 여기서 다시 동서남북을 계산한다.
                 queue.offer(new Cell(x, y));
                 seen[x][y] = true;
             }
