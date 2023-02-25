@@ -19,14 +19,15 @@ public class Trie extends ImplementTrie {
 
         char curr = word.charAt(0);
         if (curr == '.') {
-            // any char 이므로 26 loop를 돌면서 각각 recursion을 실행한다r
+            // any char 이므로 26 loop를 돌면서 각각 recursion을 실행한다
             for (int i = 0; i < 26; i++) {
                 char c = (char) ('a' + i);
                 if (dfs(word.substring(1), node.get(c))) {
                     return true;
                 }
             }
-        } else if (node.containsKey(curr)) {
+        }
+        else if (node.containsKey(curr)) {
             return dfs(word.substring(1), node.get(curr));
         }
         return false;

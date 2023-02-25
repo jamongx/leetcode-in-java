@@ -30,6 +30,10 @@ public class MergeTwoSortedLists {
     }
 
 
+    /**
+     * recursion을 돌면서,
+     * list1와 list2 중에서 작은 node의 next에 큰 node를 붙인다. 
+     */
     public ListNode sol2(ListNode list1, ListNode list2) {
         if (list1 == null || list2 == null) {
             return list1 == null ? list2 : list1;
@@ -46,6 +50,7 @@ public class MergeTwoSortedLists {
         list1.next = sol2(list1.next, list2);
         return list1;
     }
+
 
     public static void main(String[] args) {
         MergeTwoSortedLists t = new MergeTwoSortedLists();

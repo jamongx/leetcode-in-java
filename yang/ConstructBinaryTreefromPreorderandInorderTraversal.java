@@ -3,15 +3,14 @@ import java.util.Map;
 
 /**
  * 트리의 전위, 중위 순회로 결과를 입력값으로 받아 이진 트리를 구축
- * - preorder의 첫번째 값은 부모 노드이며 inorder traversal 결과를 left 와 right 로 나누는 역할을 한다.
- * - 즉, preorder traversal의 값을 순차적으로 빼면서 inorder traversal를 left 와 right 로 나눈다.
+ * - preorder의 첫번째 값은 root 노드가 되며
+ * - inorder의 root를 기준으로 left 와 right 로 나누는 역할을 한다.
+ * 
+ * preorder traversal: mid -> left -> right
+ * inorder  traversal: left -> mid -> right
  */
 public class ConstructBinaryTreefromPreorderandInorderTraversal {
 
-    /**
-     * preorder 배열로 root를 만들고
-     * inorder 배열로 left, right를 만든다.
-     */
     public TreeNode sol1(int[] preorder, int[] inorder) {
 
         // inorder 배열을 map에 index와 같이 저장한다.
@@ -21,12 +20,8 @@ public class ConstructBinaryTreefromPreorderandInorderTraversal {
             inToIndex.put(inorder[i], i);
         }
 
-        return build(preorder,
-                         0, // preorder의 시작
-                         preorder.length - 1, // preorder의 마지막 (배열의끝)
-                     inorder,
-                         0, // inorder 시작
-                         inorder.length - 1, // inorder의 마지막 (배열의 끝) 
+        return build(preorder, 0, preorder.length - 1,
+                     inorder,  0, inorder.length  - 1,
                      inToIndex);
     }
 
@@ -38,36 +33,23 @@ public class ConstructBinaryTreefromPreorderandInorderTraversal {
             return null;
         }
 
-        // preorder는 root를 먼저 방문한다.
-        // preorder는 <중간 -> 왼쪽 -> 오른쪽> 순서로 traversal을 한다.
-        // rootVal -> 3 (preorder[0]=3)
-        int rootVal     = preorder[preStart];
+        int rootVal = preorder[preStart];
 
         // rootInIndex -> inorder에서 root의 위치의 index
-        // inorder는 <왼쪽 -> 중간 -> 오른쪽> 순서로 traversal을 한다.
         int rootInIndex = inToIndex.get(rootVal);
 
-        // inorder 배열의 rootVal 값의 index에서 inStart 값을 빼준다.
-        int leftSize    = rootInIndex - inStart;
+        // inorder에서 rootVal을 중심으로 left 파트
+        int leftSize = rootInIndex - inStart;
 
+        // preorder은 preStart와 preEnd에 leftSize를 더하여 left와 right를 나눈다.
+        // inorder은 rootInIndex로 inStart와 inEnd를 만든다.
         TreeNode root = new TreeNode(rootVal);
-        // 마지막 node라면 left 또는 right가 null인 TreeNode를 return 한다.
-        // preorder배열의 start와 end에 leftSize를 더하여 left와 right를 나눈다.
-        // inorder 배열은 rootInIndex를 사용하여 left와 right를 만든다.
-        root.left  = build(preorder,
-                               preStart + 1,
-                               preStart + leftSize,
-                           inorder,
-                               inStart,
-                               rootInIndex - 1,
+        root.left  = build(preorder, preStart + 1, preStart + leftSize,
+                           inorder, inStart, rootInIndex - 1,
                            inToIndex);
 
-        root.right = build(preorder,
-                               preStart + leftSize + 1,
-                               preEnd,
-                           inorder,
-                               rootInIndex + 1,
-                               inEnd,
+        root.right = build(preorder, preStart + leftSize + 1, preEnd,
+                           inorder, rootInIndex + 1, inEnd,
                            inToIndex);
         return root;
     }

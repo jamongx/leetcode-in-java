@@ -59,6 +59,7 @@ public class WordSearch2 {
         visited[i][j] = true;
         System.out.println("dfs) str=" +str +", board[" +i +"][" +j +"]=" +board[i][j] +", visited[" +i +"][" +j +"]=" +visited[i][j]);
         
+        // 동서남북
         dfs(board, visited, str, i - 1, j);
         dfs(board, visited, str, i + 1, j);
         dfs(board, visited, str, i, j - 1);

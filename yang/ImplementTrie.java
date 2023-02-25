@@ -6,30 +6,22 @@ public class ImplementTrie {
     public ImplementTrie() {
     }
 
-    // Inserts a word into the trie
     public void insert(String word) {
-        TrieNode node = root; // 시작 trie는 root 이다.
+        TrieNode node = this.root;
 
-        // loop를 돌면서 children은 sub trie로 계속 이어진다.
         for(char ch : word.toCharArray()) {
-
             if (!node.containsKey(ch)) {
                 node.put(ch, new TrieNode());
             }
-
-            // put을 하기 때문에, null exception은 발생하지 않는다.
             node = node.get(ch);
         }
-        // 단어의 마지막 문자에 isLeaf를 true를 설정한다.
-        node.setEnd();
+        node.setEnd();// set a flag to the last of word
     }
 
-    // search와 startWith에서 call한다.
+
     public TrieNode searchNode(String word) {
-        TrieNode node = root; // 시작 trie는 root 이다.
-
+        TrieNode node = this.root;
         for(char ch : word.toCharArray()) {
-
             if (node.containsKey(ch)) {
                 node = node.get(ch);
             }
@@ -40,7 +32,6 @@ public class ImplementTrie {
         return node;
     }
 
-    // Returns if the word is in the trie
     public boolean search(String word) {
         TrieNode node = searchNode(word);
         return (node != null && node.isEnd());

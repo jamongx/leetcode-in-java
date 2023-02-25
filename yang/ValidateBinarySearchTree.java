@@ -38,30 +38,19 @@ public class ValidateBinarySearchTree {
 
         while (root != null || !stack.isEmpty()) {
 
-            // binary search tree는 root.left가 root보다 작은 값을 갖는다.
-            // loop를 돌면서 root와 root.left들을 leaf까지 stack에 넣는다.
+            // BST는 left가 root 보다 작은 값을 갖는다.
+            // loop를 돌면서 root와 left 들을 leaf 까지 stack에 넣는다.
             while (root != null) {
                 stack.push(root);
-                System.out.println("root or root.left=" +root.val);
                 root = root.left;
             }
 
-            // stack 이기 때문에
-            // 가장 마지막에 들어간 node가 가장 마지막 node
+            // stack의 top은 마지막 left node -> 가장 작다
             root = stack.pop();
             
-            if (pred == null) {
-                System.out.println("pred=null");
-            }
-            else if(pred.val >= root.val) {
-                System.out.println("fail> pred.val=" +pred.val +", root.val=" +root.val);
-            }
-            else {
-                System.out.println("pred.val=" +pred.val +", root.val=" +root.val);
-            }
-
-            // 아래 root가 pred가 되고 root.right -> root가 되었으므로,
-            // root가 pred 보다 커야 된다.
+            // 1. root -> pred
+            // 2. root.right -> root
+            // 3. root (root.right) > pred (root) 보다 커야 된다.
             if (pred != null && pred.val >= root.val) {
                 return false;
             }

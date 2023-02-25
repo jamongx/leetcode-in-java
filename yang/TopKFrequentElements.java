@@ -9,30 +9,28 @@ import java.util.PriorityQueue;
 public class TopKFrequentElements {
 
     /**
-     * https://www.programcreek.com/2014/05/leetcode-top-k-frequent-elements-java/
-     * Approach1: Heap
-     * TC: O(n*log(k)).
-     * Note) That heap is often used to reduce time complexity
-     * from n*log(n) (see solution 3) to n*log(k).
+     * Heap (Priority Queue)
+     * TC: O(nlogk)
+     * SC: O(n)
+     * That heap is often used to reduce time complexity from nlogn to nlogk.
      */
     public List<Integer> sol1(int[] nums, int k) {
 
-        // count the frequency for each element
+        // <number, frequency>
         Map<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
-            map.put(num, map.getOrDefault(num, 0) + 1);
+            map.merge(num, 1, Integer::sum);
         }
 
-        // create a min heap
+        // create a min heap, entry.getKey, entry.getValue
         PriorityQueue<Map.Entry<Integer, Integer>> queue
          = new PriorityQueue<>(Comparator.comparing(e -> e.getValue()));
 
         // maintain a heap of size k.
-        // k개를 return 해야 된다. 우선순위 queue에 k개만 유지한다.
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             queue.offer(entry);
             if (queue.size() > k) {
-                queue.poll();
+                queue.poll(); // minheap의 top을 pop한다.
             }
         }
 
@@ -49,16 +47,16 @@ public class TopKFrequentElements {
 
 
     /**
-     * https://www.programcreek.com/2014/05/leetcode-top-k-frequent-elements-java/ 
-     * Approch2: Bucket Sort 
+     * Bucket Sort 
      * TC: O(n)
+     * SC: O(n)
      */
     public List<Integer> sol2(int[] nums, int k) {
 
-        // <number, frequency(count)>
+        // <number, frequency>
         Map<Integer, Integer> map = new HashMap<>();
         for (int num : nums) {
-            map.put(num, map.getOrDefault(num, 0) + 1);
+            map.merge(num, 1, Integer::sum);
         }
 
         // get the max frequency
@@ -107,6 +105,7 @@ public class TopKFrequentElements {
         int k = 2;
 
         System.out.println(t.sol1(nums, k));
+        System.out.println(t.sol2(nums, k));
     }
 
 }

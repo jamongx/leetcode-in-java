@@ -1,10 +1,9 @@
 
 public class WordDictionary {
 
-    private Trie trie;
+    private Trie trie = new Trie();
 
     public WordDictionary() {
-        this.trie = new Trie();
     }
 
     /**
@@ -20,6 +19,7 @@ public class WordDictionary {
      * contain the dot character '.' to represent any one letter
      */
     public boolean search(String word) {
+        // trie.search method를 봐야 됩니다.
         return this.trie.search(word);
     }
 
