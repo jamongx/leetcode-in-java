@@ -7,42 +7,37 @@ import java.util.Queue;
 public class BinaryTreeLevelOrderTraversal {
 
     public List<List<Integer>> sol1(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
         if (root == null) {
-            return new ArrayList<>();
+            return result;
         }
-
-        List<List<Integer>> ans = new ArrayList<>();
 
         Queue<TreeNode> queue = new ArrayDeque<>(Arrays.asList(root));
 
         while (!queue.isEmpty()) {
 
-            System.out.println("while queue.size()=" +queue.size());
+            List<Integer> level = new ArrayList<>();
 
-            List<Integer> currLevel = new ArrayList<>();
-
-            // int i = queue.size()는 초기값이 한번 설정되면
-            // loop가 끝날때까지 값이 변경되지 않는다.
+            // int i = queue.size() 초기 값은
+            // for loop가 끝날때까지 값이 변경되지 않는다.
+            // 즉 queue의 push한 node 개수 (=parent)만큼 loop를 돌면서
+            // 그 parent의 child를 queue에 push한다.
             for (int i = queue.size(); i > 0; i--) {
-                System.out.println("for queue.size()=" +queue.size());
 
                 TreeNode node = queue.poll();
 
-                System.out.println("poll queue.size()=" +queue.size());
-                currLevel.add(node.val);
+                level.add(node.val);
 
                 if (node.left != null) {
                     queue.offer(node.left);
-                    System.out.println("add left queue.size()=" +queue.size());
                 }
                 if (node.right != null) {
                     queue.offer(node.right);
-                    System.out.println("add right queue.size()=" +queue.size());
                 }
             }
-            ans.add(currLevel);
+            result.add(level);
         }
-        return ans;
+        return result;
     }
 
 

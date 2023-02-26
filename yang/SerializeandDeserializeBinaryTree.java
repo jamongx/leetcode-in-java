@@ -6,6 +6,47 @@ import java.util.Queue;
 public class SerializeandDeserializeBinaryTree {
 
     /**
+     * DFS
+     * Preorder Traversal: root -> left -> right
+     */
+    public String serialize2(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        preorder(root, sb);
+        return sb.toString();
+    }
+
+    private void preorder(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append("n ");
+            return;
+        }
+
+        sb.append(root.val).append(" ");
+        preorder(root.left, sb);
+        preorder(root.right, sb);
+    }
+
+
+    public TreeNode deserialize2(String data) {
+        String[] vals = data.split(" ");
+        Queue<String> queue = new ArrayDeque<>(Arrays.asList(vals));
+        return preorder(queue);
+    }
+
+    private TreeNode preorder(Queue<String> queue) {
+        String s = queue.poll();
+        if (s.equals("n")) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(Integer.parseInt(s));
+        root.left = preorder(queue);
+        root.right = preorder(queue);
+        return root;
+    }
+
+
+    /**
      * BFS
      */
     public String serialize1(TreeNode root) {
@@ -58,46 +99,6 @@ public class SerializeandDeserializeBinaryTree {
     }
 
 
-    /**
-     * DFS
-     */
-    public String serialize2(TreeNode root) {
-        StringBuilder sb = new StringBuilder();
-        preorder(root, sb);
-        return sb.toString();
-    }
-
-    private void preorder(TreeNode root, StringBuilder sb) {
-        if (root == null) {
-            sb.append("n ");
-            return;
-        }
-
-        sb.append(root.val).append(" ");
-        preorder(root.left, sb);
-        preorder(root.right, sb);
-    }
-
-    /**
-     * DFS
-     */
-    public TreeNode deserialize2(String data) {
-        String[] vals = data.split(" ");
-        Queue<String> queue = new ArrayDeque<>(Arrays.asList(vals));
-        return preorder(queue);
-    }
-
-    private TreeNode preorder(Queue<String> queue) {
-        String s = queue.poll();
-        if (s.equals("n")) {
-            return null;
-        }
-
-        TreeNode root = new TreeNode(Integer.parseInt(s));
-        root.left = preorder(queue);
-        root.right = preorder(queue);
-        return root;
-    }
 
     public static void main(String[] args) {
 

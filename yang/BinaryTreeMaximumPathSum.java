@@ -1,6 +1,34 @@
 public class BinaryTreeMaximumPathSum {
 
+    // path -> 위로 올리는 값
+    // path sum -> 각 node에서 right + left + root 최대값
+    private int result = Integer.MIN_VALUE;
+
     public int sol1(TreeNode root) {
+        maxPathSumDownFrom(root);
+        return result;
+    }
+
+    // root->val + 0/1 of its subtrees
+    private int maxPathSumDownFrom(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        // left or right subtree의 값이 negative이면 버린다.
+        int left  = Math.max(maxPathSumDownFrom(root.left),  0);
+        int right = Math.max(maxPathSumDownFrom(root.right), 0);
+        
+        // if left and right child are both negative
+        result = Math.max(result, root.val + left + right);
+
+        // max(left, right)와 root.val를 더한값을 return
+        return root.val + Math.max(left, right);
+    }
+
+
+
+    public int sol2(TreeNode root) {
         int max[] = new int[1];
         max[0] = Integer.MIN_VALUE;
         calculateSum(root, max);
@@ -23,29 +51,6 @@ public class BinaryTreeMaximumPathSum {
         return current;
     }
 
-
-
-    private int ans = Integer.MIN_VALUE;
-
-    public int sol2(TreeNode root) {
-        maxPathSumDownFrom(root);
-        return ans;
-    }
-
-    // root->val + 0/1 of its subtrees
-    private int maxPathSumDownFrom(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-
-        int left  = Math.max(maxPathSumDownFrom(root.left),  0);
-        int right = Math.max(maxPathSumDownFrom(root.right), 0);
-
-        // if left and right child are both negative
-        ans = Math.max(ans, root.val + left + right);
-
-        return root.val + Math.max(left, right);
-    }
 
 
     public static void main(String[] args) {
