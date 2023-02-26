@@ -3,6 +3,10 @@ import java.util.Map;
 
 public class ValidAnagram {
 
+    // 배열 arr을 만들어서
+    // s로 count++
+    // t로 count-- 준다.
+    // 마지막에 arr에 0이 아닌 값이 있으면 false return
     public boolean sol1(String s, String t) {
         if (s == null || t == null) {
             return false;
@@ -27,10 +31,10 @@ public class ValidAnagram {
 
 
     /**
-     * If the inputs contain unicode characters, an array with length of 26 is not enough.
-     * @param s
-     * @param t
-     * @return
+     * map을 사용하고 s의 char를 put한 다음에
+     * t의 char를 map에서 remove해서 size가 0보다 크면 false이다.
+     * If the inputs contain unicode characters,
+     * an array with length of 26 is not enough.
      */
     public boolean sol2(String s, String t) {
         if (s == null || t == null) {

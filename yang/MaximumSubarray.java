@@ -14,6 +14,9 @@ public class MaximumSubarray {
         int max = nums[0];
 
         int[] sum = new int[nums.length];
+        // sum은 i까지 sub-array의 가장 큰 sum 값
+        // sum[i-1]의 값을 사용하여 sum[i]값을 계산한다.
+        // dynamic programming
         sum[0] = nums[0];
 
         for (int i = 1; i < nums.length; i++) {

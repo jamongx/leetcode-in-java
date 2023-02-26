@@ -5,70 +5,64 @@ import java.util.ArrayDeque;
 
 public class CloneGraph {
 
-    private Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
+    // <org, copy>
+    private Map<UndirectedGraphNode, UndirectedGraphNode> map_dfs = new HashMap<>();
 
     // DFS
-    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+    public UndirectedGraphNode sol1(UndirectedGraphNode node) {
         if (node == null) {
             return null;
         }
 
-        if (map.containsKey(node)) {
-            return map.get(node);
+        if (map_dfs.containsKey(node)) {
+            return map_dfs.get(node);
         }
 
-        UndirectedGraphNode newNode = new UndirectedGraphNode(node.label);
-        map.put(node, newNode);
+        UndirectedGraphNode copy = new UndirectedGraphNode(node.label);
+        map_dfs.put(node, copy);
 
         for (UndirectedGraphNode neighbor : node.neighbors) {
-            newNode.neighbors.add(cloneGraph(neighbor));
+            copy.neighbors.add(sol1(neighbor));
         }
 
-        System.out.println("DFS=" +newNode);
-        return newNode;
+        System.out.println("DFS=" +copy);
+        return copy;
     }
 
+    
+    // <org, copy>
+    private Map<UndirectedGraphNode, UndirectedGraphNode> map_bfs = new HashMap<>();
 
-    // BFS
+    /**
+     * BFS 
+     */
     public UndirectedGraphNode sol2(UndirectedGraphNode node) {
         if (node == null) {
             return null;
         }
 
         Queue<UndirectedGraphNode> queue = new ArrayDeque<>();
-
-        // original node를 key로 저장하고 copy한 node value로 넣어서
-        // 마지막에 input(node)의 value값을 return 한다.
-        Map<UndirectedGraphNode, UndirectedGraphNode> map = new HashMap<>();
-
-        // add node return true/false
         queue.offer(node);
-        System.out.println("que] add node=" +node);
 
         UndirectedGraphNode copy1 = new UndirectedGraphNode(node.label);
-        map.put(node, copy1);
-        System.out.println("map] put  key=" +node +", copy1=" +copy1);
+        map_bfs.put(node, copy1);
 
         while (!queue.isEmpty()) {
 
-            // The method returns head element and also removes it
             UndirectedGraphNode head = queue.poll();
-            System.out.println("que] get head=" +head);
 
             for (UndirectedGraphNode neighbor : head.neighbors) {
 
-                if (!map.containsKey(neighbor)) {
+                if (!map_bfs.containsKey(neighbor)) {
                     queue.offer(neighbor);
-                    System.out.println("que] add node=" +node);
                     UndirectedGraphNode copy2 = new UndirectedGraphNode(neighbor.label);
-                    map.put(neighbor, copy2);
-                    System.out.println("map] put  key=" +node +", copy2=" +copy2);
+                    map_bfs.put(neighbor, copy2);
                 }
-                map.get(head).neighbors.add(map.get(neighbor));
+                map_bfs.get(head).neighbors.add(map_bfs.get(neighbor));
             }
         }
 
-        return map.get(node);
+        return map_bfs.get(node);
     }
 
     /* Build the desired graph

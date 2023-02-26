@@ -4,21 +4,14 @@ import java.util.Queue;
 public class MergeKSortedLists {
 
     /**
-     * https://walkccc.me/LeetCode/problems/0023/
-     * Time: O(nlog⁡k)
-     * Space: O(k)
-     * --------------------------------------------------------------------------
-     * https://www.programcreek.com/2013/02/leetcode-merge-k-sorted-lists-java/
-     * Time: log(k) * n.
-     * k is number of list and n is number of total elements. 
-     * 우선순위 queue선언하는것이 포인트이다.
-     * @param lists
-     * @return
+     * min heap (priority queue) 
+     * TC: O(nlog⁡k)
+     * SC: O(k)
+     * (중요!) k is number of list and n is number of total elements. 
      */
     public ListNode sol1(ListNode[] lists) {
         ListNode dummy = new ListNode(0);
         ListNode curr = dummy;
-
 
         /* java8
          * 1. Comparator 이용
@@ -28,24 +21,21 @@ public class MergeKSortedLists {
          * Queue<ListNode> minHeap = new PriorityQueue<>((a, b) -> b.val - a.val); // 오름차순 */
         Queue<ListNode> minHeap = new PriorityQueue<>((a, b) -> a.val - b.val); // 내림차순
 
-        for ( ListNode list : lists) {
+        for (ListNode list : lists) {
             if (list != null) {
-                // Priority Queue Add
                 minHeap.offer(list);
             }
         }
 
         while (!minHeap.isEmpty()) {
 
-            // 첫번째 값을 반환하고 제거 비어있다면 null
-            ListNode minNode = minHeap.poll();
-
-            // pop한 node의 next가 null이 아니면 다시 add한다.
-            if (minNode.next != null) {
-                minHeap.offer(minNode.next);
+            ListNode node = minHeap.poll();
+            if (node.next != null) {
+                // node.next가 null이 아니면 offer 한다.
+                minHeap.offer(node.next);
             }
 
-            curr.next = minNode;
+            curr.next = node;
             curr = curr.next;
         }
 
@@ -96,6 +86,7 @@ public class MergeKSortedLists {
         }
         return dummy.next;
     }
+
 
     public static void main(String[] args) {
         MergeKSortedLists t = new MergeKSortedLists();

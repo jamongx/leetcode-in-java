@@ -12,9 +12,6 @@ public class CourseSchedule {
      * [1, 2], [1, 3], [2, 4] ...
      * 1. prerequisites[n][1]=2 -> 선수과목
      * 2. prerequisites[n][0]=1 -> 선택과목
-     * @param numCourses
-     * @param prerequisites
-     * @return
      */
     public boolean sol1(int numCourses, int[][] prerequisites) {
         if (numCourses == 0 || prerequisites == null || prerequisites.length == 0) {
@@ -53,20 +50,16 @@ public class CourseSchedule {
 
 
     /**
-     * 
-     * @param map
+     * @param map -> 과목 연결 정보
      * @param visit -> 초기값 0, cyclic -1, acyclic 1
      * @param i -> 과목번호
-     * @return
      */
     private boolean canFinishDFS(Map<Integer, List<Integer>> map, int[] visit, int i) {
         // 이미 방문했고 cyclic
-        // recursion을 돌다가 여기서 return false를 할 수 있음
         if (visit[i] == -1) {
             return false;
         }
         // 이미 방문했고 acyclic
-        // recursion을 돌다가 여기서 return true를 할 수 있음
         if (visit[i] == 1) {
             return true;
         }
@@ -78,10 +71,10 @@ public class CourseSchedule {
         if (map.containsKey(i)) {
             
             // 선수과목에 연결된 과목 리스트를 loop
-            // map.get(i) -> value -> 파일처리 ,알고리즘
+            // map.get(i) -> value -> 파일처리, 알고리즘
             for (int j : map.get(i)) {
-                
                 if (!canFinishDFS(map, visit, j)) {
+                    // visit[i] = -1로 set된 상태에서 return
                     return false;
                 }
             }

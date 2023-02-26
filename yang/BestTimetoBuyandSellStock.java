@@ -1,6 +1,10 @@
 public class BestTimetoBuyandSellStock {
 
-    // Brute force
+    /**
+     * Brute force
+     * TC: O(n^2)
+     * SC: O(1)
+     */
     public int sol1(int[] prices) {
 
         int len = prices.length;
@@ -15,7 +19,7 @@ public class BestTimetoBuyandSellStock {
 
     /**
      * Dynamic Programming (Kadane's Algorithm)
-     * TC: O(N)
+     * TC: O(n)
      * SC: O(1)
      */
     public int sol2(int[] prices) {
@@ -44,9 +48,9 @@ public class BestTimetoBuyandSellStock {
     public static void main(String[] args) {
         BestTimetoBuyandSellStock t = new BestTimetoBuyandSellStock();
 
-        int[] price = { 7, 1, 5, 3, 6, 4 };
+        int[] prices = { 7, 1, 5, 3, 6, 4 };
 
-        System.out.println(t.sol2(price));
+        System.out.println(t.sol2(prices));
     }
 
 }

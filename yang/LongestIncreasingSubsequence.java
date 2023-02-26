@@ -6,10 +6,10 @@ import java.util.List;
 public class LongestIncreasingSubsequence {
 
     /**
-     * Approach 1: 2D DP
-     * depth first search with cache -> N^2
-     * @param nums
-     * @return
+     * 2D DP
+     * depth first search with cache
+     * TC: O(N^2)
+     * SC: O(N^2)
      */
     public int sol1(int[] nums) {
         if (nums == null || nums.length == 0) {
@@ -20,26 +20,27 @@ public class LongestIncreasingSubsequence {
         int[] dp = new int[nums.length];
         Arrays.fill(dp, 1);
 
-        //int len = 1;
-        for (int i = 1; i < nums.length; i++) {
+        // r: right, l: left
+        int result = 1;
+        for (int r = 1; r < nums.length; r++) {
 
-            for (int j = 0; j < i; j++) {
+            for (int l = 0; l < r; l++) {
 
-                if (nums[j] < nums[i]) {
-                    // num[i]가 num[j]보다 // index가 높은 수라서 값이 더 커야 한다.
-                    // nums[j] < nums[i] -> true, 기존 dp[j]에 1 더해준다.
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                if (nums[l] < nums[r]) {
+                    // l과 r은 l < r 다른 index이다. dp[l]에 1 더해준다.
+                    dp[r] = Math.max(dp[r], dp[l] + 1);
                 }
             }
-            //len = Math.max(dp[i], len);
+            result = Math.max(dp[r], result);
         }
 
-        // instead of stream.max, return len;
-        return Arrays.stream(dp).max().getAsInt(); // O(n)
+        return result;
     }
 
 
-    // O(nlogn)
+    /**
+     * TC: O(nlogn)
+     */
     public int sol2(int[] nums) {
         List<Integer> list = new ArrayList<>();
 
@@ -47,16 +48,21 @@ public class LongestIncreasingSubsequence {
 
             int i = Collections.binarySearch(list, num, (a, b) -> a - b);
             // if not found, binarySearch return -insertPosition-1
+            System.out.println("i=" +i);
             if (i < 0) {
                 i = -(i+1);
             }
                 
             // update len when insert position is at the end
+            // 리스트의 모든 값 보다 큰 숫자면 마지막에 추가한다.
             if(i == list.size()) {
                 list.add(num);
             }
             else {
-                // 순서를 바꿀수 없다. 리스트이 마지막보다 작으면 replace한다.
+                // 순서를 바꿀 필요가 없다. 리스트이 마지막보다 작으면 replace한다.
+                // list=[2, 3, 7, 101] <- 18
+                // i=(-4)
+                // list=[2, 3, 7, 18] <- replace
                 list.set(i, num);
             }
 

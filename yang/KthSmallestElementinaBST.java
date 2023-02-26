@@ -4,43 +4,34 @@ import java.util.ArrayDeque;
 public class KthSmallestElementinaBST {
 
     /**
-     * Binary Search
+     * Binary Search 
      * 가장 작은걸 찾아서 밑에서 위로 올라오면서 k-th를 찾는 것이다.
      * TC: O(n^2)
      * SC: O(h)
      */
     public int sol1(TreeNode root, int k) {
-        // leftCount -> 왼쪽(mid 보다 작은 node 개수)
+        // leftCount -> left (mid 보다 작은) node 개수
         int leftCount = countNodes(root.left);
-        System.out.println("sol1) root.Val=" +root.val +", leftCount=" +leftCount +", k=" +k);
 
         if (leftCount + 1 == k) {
-            // leftCount와 curr(1)를 더하면 k가 된다.
-            System.out.println("leftCount+1 (=k)=" +(leftCount+1));
             return root.val;
         }
         if (leftCount + 1 > k) {
-            // leftCount와 curr(1)를 더하면 k보다 크다면
-            System.out.println("leftCount+1 (>k)=" +(leftCount+1));
-            // left로 들어간다.
-            // sol1에서 left_count를 다시 센다.
+            // left로 1단계 내려간다.
+            // sol1에서 left_count를 다시 센다 (1단계 더 내려갈 수도 있다)
             return sol1(root.left, k);
         }
 
-        // leftCount가 K보다 작으면 right side를 다시 찾는다.
-        System.out.println("leftCount (<k)=" +leftCount);
+        // leftCount가 K보다 작으면 
+        // left와 root의 개수는 k에서 빼주고 right side를 다시 찾는다.
         return sol1(root.right, k - 1 - leftCount);
     }
 
     private int countNodes(TreeNode root) {
         if (root == null) {
-            System.out.println("count) root is null");
             return 0;
         }
-        int left = countNodes(root.left);
-        int right = countNodes(root.right);
-        System.out.println("count) root.val=" +root.val +", curr=1, left=" +left +", right=" +right +", sum=" +(1 + left + right));
-        return 1 + left + right;
+        return 1 + countNodes(root.left) + countNodes(root.right);
     }
 
     /**
@@ -79,7 +70,8 @@ public class KthSmallestElementinaBST {
     }
 
     /**
-     * Stack
+     * Stack을 사용한다.
+     * ValidateBinarySearchTree과 동일한 알고리즘을 사용한다.
      * TC: O(n)
      * SC: O(h)
      */

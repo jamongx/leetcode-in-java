@@ -12,11 +12,11 @@ public class ThreeSum {
 
         List<List<Integer>> res = new LinkedList<>();
 
-        // sort array
+        // 먼저 nums를 정렬한다.
         Arrays.sort(nums);
 
         for (int i = 0; i < nums.length - 2; i++) {
-            // avoid duplicate solutions
+            // num[i]와 num[i-1]이 같으면 중복이므로 skip한다.
             if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
@@ -42,10 +42,10 @@ public class ThreeSum {
                     }
                 }
                 else if (sum > 0) {
-                    right--;
+                    right--; // right--은 sum을 감소시킨다.
                 }
                 else {
-                    left++;
+                    left++; // left++은 sum을 증가시킨다.
                 }
             }
         }

@@ -2,7 +2,6 @@
 public class HouseRobber {
 
     public int sol1(int[] nums) {
-
         if (nums == null || nums.length == 0) {
             return 0;
         }
@@ -37,16 +36,16 @@ public class HouseRobber {
 
 
     public int sol2(int[] nums) {
-        int prev1 = 0; // dp[i - 1]
-        int prev2 = 0; // dp[i - 2]
+        int dp_1 = 0; // dp[i - 1]
+        int dp_2 = 0; // dp[i - 2]
 
         for (int num : nums) {
-            int dp = Math.max(prev1, prev2 + num);
-            prev2 = prev1; // dp[i-1]을 dp[i-2]로 복사한다.
-            prev1 = dp;    // dp를 dp[i-1]로 복사한다.
+            int dp = Math.max(dp_1, dp_2 + num);
+            dp_2 = dp_1; // dp[i-1]을 dp[i-2]로 복사한다.
+            dp_1 = dp;   // dp를 dp[i-1]로 복사한다.
         }
 
-        return prev1;
+        return dp_1;
     }
 
     public static void main(String[] args) {

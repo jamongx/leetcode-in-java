@@ -1,34 +1,31 @@
 public class LowestCommonAncestorofaBinarySearchTree {
 
     /**
-     * https://walkccc.me/LeetCode/problems/0235/
+     * BST: left < mid < right
      * Recursion
-     * Binary search tree: left < mid < right
+     * DFS
+     * TC: O(h)
+     * SC: O(h)
      */
     public TreeNode sol1(TreeNode root, TreeNode p, TreeNode q) {
         
-        // root.val이 p 와 q 둘 중의 큰 값보다 클때
-        // root 보다 작은 root.left 로 recursion을 돈다.
         if (root.val > Math.max(p.val, q.val)) {
-            System.out.println("max, root.val=" +root.val +", p.val=" +p.val +", q.val=" +q.val);
             return sol1(root.left, p, q);
         }
         
-        // p 와 q 둘 중의 작은 값보다 root.val이 작을때
-        // root 보다 큰 root.right 로 recursion을 돈다.
         if (root.val < Math.min(p.val, q.val)) {
-            System.out.println("min, root.val=" +root.val +", p.val=" +p.val +", q.val=" +q.val);
             return sol1(root.right, p, q);
         }
         
-        System.out.println("not, root.val=" +root.val +", p.val=" +p.val +", q.val=" +q.val);
+        // root <= max(p, q) and root >= min(p, q)
+        // 즉 root는 p와 q의 중간에 있다.
         return root;
     }
 
     /**
-     * https://www.programcreek.com/2014/07/leetcode-lowest-common-ancestor-of-a-binary-search-tree-java/
-     * Iterator
-     * Binary search tree: left < mid < right
+     * Iterative
+     * TC: O(h)
+     * SC: O(h)
      */
     public TreeNode sol2(TreeNode root, TreeNode p, TreeNode q) {
 

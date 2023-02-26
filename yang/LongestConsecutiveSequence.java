@@ -7,10 +7,8 @@ public class LongestConsecutiveSequence {
 
     /**
      * Union Find
-     * Time: O(n)
-     * Space: O(n)
-     * @param nums
-     * @return
+     * TC: O(n)
+     * SC: O(n)
      */
     public int sol1(int[] nums) {
 
@@ -20,20 +18,24 @@ public class LongestConsecutiveSequence {
         }
 
         int result = 0;
+
         for (int num : nums) {
             int count = 1;
+
             int down = num - 1;
             while (set.contains(down)) {
                 set.remove(down);
                 down--;
                 count++;
             }
+
             int up = num + 1;
             while (set.contains(up)) {
                 set.remove(up);
                 up++;
                 count++;
             }
+
             result = Math.max(result, count);
         }
         return result;
@@ -41,14 +43,12 @@ public class LongestConsecutiveSequence {
 
     /**
      * Union Find
-     * Time: O(n)
-     * Space: O(n)
-     * @param nums
-     * @return
+     * TC: O(n)
+     * SC: O(n)
      */
     public int sol2(int[] nums) {
 
-        int ans = 0;
+        int result = 0;
         Set<Integer> seen = Arrays.stream(nums).boxed().collect(Collectors.toSet());
         
         for (int num : nums) {
@@ -67,20 +67,20 @@ public class LongestConsecutiveSequence {
                 System.out.println("contain=(++num)=" +num +", len=" +length);
             }
 
-            System.out.print("ans=" +ans);
-            ans = Math.max(ans, length);
-            System.out.println(", len=" +length +", max=" +ans);
+            System.out.print("ans=" +result);
+            result = Math.max(result, length);
+            System.out.println(", len=" +length +", max=" +result);
         }
 
-        return ans;
+        return result;
     }
 
 
     public static void main(String[] args) {
         LongestConsecutiveSequence t = new LongestConsecutiveSequence();
 
-        int[] nums = { 0, 3, 7, 2, 5, 8, 4, 6, 0, 1 };
-        //int[] nums = { 1, 3, 5, 2, 4, 9, 12, 15, 17, 20 };
+        //int[] nums = { 0, 3, 7, 2, 5, 8, 4, 6, 0, 1 };
+        int[] nums = { 1, 3, 5, 2, 4, 9, 12, 15, 17, 20 };
 
         System.out.println(t.sol2(nums));
     }

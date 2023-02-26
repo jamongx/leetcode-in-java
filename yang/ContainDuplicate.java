@@ -19,8 +19,8 @@ public class ContainDuplicate {
     }
 
     /**
-     * Arrays.sort-> O(nlog(n))
-     * loop O(n)
+     * Arrays.sort (merge sort) -> O(nlogn)
+     * loop -> O(n)
      */
     public boolean sol2(int[] nums) {
         Arrays.sort(nums);
@@ -53,6 +53,4 @@ public class ContainDuplicate {
 
         System.out.println(t.sol3(nums));
     }
-
-
 }

@@ -5,8 +5,6 @@ public class NumberofIslands {
 
     /**
      * DFS
-     * @param grid
-     * @return
      */
     public int sol1(char[][] grid) {
         int ans = 0;
@@ -14,7 +12,7 @@ public class NumberofIslands {
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[0].length; ++j) {
                 if (grid[i][j] == '1') {
-                    DFS(grid, i, j);
+                    dfs(grid, i, j);
                     ++ans;
                 }
             }
@@ -23,7 +21,7 @@ public class NumberofIslands {
         return ans;
     }
 
-    private void DFS(char[][] grid, int i, int j) {
+    private void dfs(char[][] grid, int i, int j) {
         if (i < 0 || i == grid.length || j < 0 || j == grid[0].length) {
             return;
         }
@@ -33,17 +31,15 @@ public class NumberofIslands {
         }
 
         grid[i][j] = '2'; // Mark '2' as visited
-        DFS(grid, i + 1, j);
-        DFS(grid, i - 1, j);
-        DFS(grid, i, j + 1);
-        DFS(grid, i, j - 1);
+        dfs(grid, i + 1, j);
+        dfs(grid, i - 1, j);
+        dfs(grid, i, j + 1);
+        dfs(grid, i, j - 1);
     }
 
 
     /**
      * BFS
-     * @param grid
-     * @return
      */
     public int sol2(char[][] grid) {
         int ans = 0;
@@ -51,7 +47,7 @@ public class NumberofIslands {
         for (int i = 0; i < grid.length; ++i) {
             for (int j = 0; j < grid[0].length; ++j) {
                 if (grid[i][j] == '1') {
-                    BFS(grid, i, j);
+                    bfs(grid, i, j);
                     ++ans;
                 }
             }
@@ -59,6 +55,7 @@ public class NumberofIslands {
         return ans;
     }
 
+    // TODO 동서남북 포함해서 Cell Class를 가독성 높에 바꿀수 있을것 같다.
     class Cell {
         int i;
         int j;
@@ -70,7 +67,7 @@ public class NumberofIslands {
 
     private int[] dirs = { 0, 1, 0, -1, 0 };
 
-    private void BFS(char[][] grid, int row, int col) {
+    private void bfs(char[][] grid, int row, int col) {
 
         Queue<Cell> queue = new ArrayDeque<>();
 
@@ -105,6 +102,7 @@ public class NumberofIslands {
 
 
     public static void main(String[] args) {
+        NumberofIslands t = new NumberofIslands();
 
         char[][] grid1 = {
                 { '1', '1', '1', '1', '0' },
@@ -120,7 +118,6 @@ public class NumberofIslands {
             {'0','0','0','1','1'}
         };
         
-        NumberofIslands t = new NumberofIslands();
         System.out.println(t.sol2(grid1));
         System.out.println(t.sol2(grid2));
 

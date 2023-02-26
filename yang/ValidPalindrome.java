@@ -2,11 +2,12 @@ public class ValidPalindrome {
 
     /**
      * https://walkccc.me/LeetCode/problems/0125/
-     * The following is a solution with O(n) time complexity and O(1) space complexity.
-     * letter or digit
-     * ((s.charAt(j) >= 'a' && s.charAt(j) <= 'z') || (s.charAt(j) >= '0' && s.charAt(j) <= '9'))
-     * @param s
-     * @return
+     * TC: O(n)
+     * SC: O(1)
+     * Check letter or digit
+     * ((s.charAt(j) >= 'a' && s.charAt(j) <= 'z')
+     *  || (s.charAt(j) >= '0' && s.charAt(j) <= '9'))
+     * 문자열(s)의 시작과 끝에서 2개의 pointer로 각각 loop를 돌면서 문자들을 비교한다.
      */
     public boolean sol1(String s) {
         int left  = 0;
@@ -21,7 +22,8 @@ public class ValidPalindrome {
             while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
                 right--;
             }
-            if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
+            if (Character.toLowerCase(s.charAt(left))
+             != Character.toLowerCase(s.charAt(right))) {
                 return false;
             }
             left++;

@@ -1,8 +1,9 @@
 
 public class ProductofArrayExceptSelf {
 
-    /*
+    /**
      * TC: O(n)
+     * SC: O(n)
      */
     public int[] sol1(int[] nums) {
         int len = nums.length;
@@ -32,6 +33,7 @@ public class ProductofArrayExceptSelf {
     }
 
     /**
+     * TC: O(n)
      * SC: O(1)
      */
     public int[] sol2(int[] nums) {
@@ -44,7 +46,7 @@ public class ProductofArrayExceptSelf {
         }
 
         int suffix = 1;
-        for (int i = len - 1; i >= 0; --i) {
+        for (int i = len - 1; i >= 0; i--) {
             result[i] *= suffix;
             suffix *= nums[i];
         }

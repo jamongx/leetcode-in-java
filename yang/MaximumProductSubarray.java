@@ -11,6 +11,8 @@ public class MaximumProductSubarray {
         int min    = nums[0];
 
         // negative 값이 곱해질 수 있으므로 min/max를 같이 계산해야 된다.
+        // max와 min 값에 nums[i]를 각각 곱해서 temp max와 temp min을 만들다
+        // 그리고 이 temp값들과 nums[i]를 곱해서 다시 min과 max를 구한다.
         for (int i = 1; i < nums.length; i++) {
             int tmpMax = max * nums[i];
             int tmpMin = min * nums[i];
@@ -27,7 +29,7 @@ public class MaximumProductSubarray {
     public static void main(String[] args) {
         MaximumProductSubarray sub = new MaximumProductSubarray();
 
-        int[] nums = { 2,3,-2,4 };
+        int[] nums = { 2, 3, -2, 4 };
 
         System.out.println(sub.sol1(nums));
     }

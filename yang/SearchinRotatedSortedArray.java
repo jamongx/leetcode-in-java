@@ -1,8 +1,8 @@
-// binary search를 사용해 target의 index를 return
-// In order to use binary search on the rotated sorted array, 
-// We need to determine how to update the left and right pointers.
 public class SearchinRotatedSortedArray {
 
+    /**
+     * Recursive
+     */
     public int sol1(int[] nums, int target) {
         return binarySearch(nums, 0, nums.length - 1, target);
     }
@@ -21,8 +21,10 @@ public class SearchinRotatedSortedArray {
             result = m;
         }
         else {
+            // 반으로 나눠서 왼쪽에 검색
             result = binarySearch(nums, l, m - 1, target);
             if(result < 0) {
+                // 오른쪽에 검색
                 result = binarySearch(nums, m + 1, r, target);
             }
         }
@@ -32,10 +34,9 @@ public class SearchinRotatedSortedArray {
 
 
     /**
-     * 
-     * @param nums
-     * @param target
-     * @return the index of the target
+     * Iterative
+     * TC: O(log⁡n)
+     * SC: O(1)
      */
     public int sol2(int[] nums, int target) {
         int l = 0;
@@ -52,9 +53,9 @@ public class SearchinRotatedSortedArray {
             }
 
             // 정렬된 파트를 기준으로 검색한다.
-            // left: nums[l..m] are sorted
+            // 1. left: nums[l..m] are sorted
             if (nums[l] <= nums[m]) {
-                // target값의 위치로 r과 l값을 바꾼다.
+                // target값이 nums[l]과 nums[m] 사이에 있다면
                 if (nums[l] <= target && target < nums[m]) {
                     r = m - 1;
                 }
@@ -62,8 +63,9 @@ public class SearchinRotatedSortedArray {
                     l = m + 1;
                 }
             }
-            // right: nums[m..n - 1] are sorted
+            // 2. right: nums[m..n - 1] are sorted
             else {
+                // target값이 nums[m]과 nums[r] 사이에 있다면
                 if (nums[m] < target && target <= nums[r]) {
                     l = m + 1;
                 }

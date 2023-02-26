@@ -1,13 +1,20 @@
 public class CountingBits {
 
+    /**
+     * Dynamic programming 
+     * f(i) := i's# of 1's in bitmask
+     * f(i) = f(i / 2) + (i % 2)
+     * TC: O(n)
+     * SC: O(n)
+     */
     public int[] sol1(int n) {
-        // Let f(i) := i's # of 1's in bitmask
-        // F(i) = f(i / 2) + i % 2
 
         int[] result = new int[n + 1];
 
         for (int i = 1; i <= n; i++) {
+            // n >> 1 -> n/2
             result[i] = result[i >> 1] + (i & 1);
+            System.out.println("result[" +i +"]=" +result[i] +" = " +"result[" +(i>>1) +"]=" +result[i >> 1] +" + " +"(i & 1)=" +(i & 1));
         }
 
         return result;
@@ -35,7 +42,7 @@ public class CountingBits {
 
         CountingBits t = new CountingBits();
 
-        int n = 2;
+        int n = 5;
         System.out.println(t.sol1(n));
     }
 }

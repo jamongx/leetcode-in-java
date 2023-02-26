@@ -4,8 +4,9 @@ import java.util.Map;
 public class TwoSum {
 
     /**
-     * TC: for double loop -> O(n^2)
-     * SC: no extra space allocated -> O(1)
+     * Brute force
+     * TC: O(n^2), for double loop
+     * SC: O(1), no extra space allocated
      */
     public int[] sol1(int[] nums, int target) {
 
@@ -22,12 +23,12 @@ public class TwoSum {
     }
 
     /**
-     * TC: for loop -> O(n)
-     * SC: HashMap to push number of 'int[] nums' -> O(n)
+     * TC: O(n), for loop
+     * SC: O(1), HashMap to push number of 'int[] nums'
      */
     public int[] sol2(int[] nums, int target) {
 
-        // <target - number, index of number>
+        // <target - nums[i], i>
         Map<Integer, Integer> map = new HashMap<>();
 
         for (int i = 0; i < nums.length; i++) {

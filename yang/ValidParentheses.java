@@ -10,8 +10,9 @@ public class ValidParentheses {
      * https://walkccc.me/LeetCode/problems/0020/
      * TC: O(n)
      * OC: O(n)
-     * @param s
-     * @return
+     * 1. stack을 사용한다.
+     * 2. '(' 나오면 ')'를 stack에 push 한다.
+     * 3. 다음 문자(')')가 stack에서 pop한 문자와 같으면 true
      */
     public boolean sol1(String s) {
         Deque<Character> stack = new ArrayDeque<>();
@@ -40,8 +41,11 @@ public class ValidParentheses {
     /**
      * https://www.programcreek.com/2012/12/leetcode-valid-parentheses-java/
      * A typical problem which can be solved by using a stack data structure.
-     * @param s
-     * @return
+     * 1. map과 stack을 사용한다.
+     * 2. map에 parenthesis를 key, value 넣는다.
+     * 3. head('(')가 나오면 stack에 push하고
+     * 4. tail(')')가 나오면 stack에서 peek해서 같으면 pop한다.
+     * 5. stack의 사이즈가 empty이면 true
      */
     public boolean sol2(String s) {
 
@@ -78,6 +82,6 @@ public class ValidParentheses {
         //String s = "()[]{}";
         String s = "({})";
 
-        System.out.println(v.sol2(s));
+        System.out.println(v.sol1(s));
     }
 }
