@@ -30,7 +30,7 @@ public class TopKFrequentElements {
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             queue.offer(entry);
             if (queue.size() > k) {
-                queue.poll(); // minheap의 top을 pop한다.
+                queue.poll(); // minheap의 top(작은것)을 pop한다.
             }
         }
 
@@ -68,7 +68,7 @@ public class TopKFrequentElements {
         // initialize an array of ArrayList.
         // index is frequency, value is list of  numbers
         // 최대 빈도수 max 사이즈의 배열을 만든다.
-        // max 보다 작은 빈도수는 0이 될수도 있다.
+        // max 보다 작은 빈도수는 0이 될수도 있다. -> max+1
         @SuppressWarnings("unchecked")
         List<Integer>[] arr = new ArrayList[max + 1];
         for (int i = 1; i <= max; i++) {
@@ -76,17 +76,17 @@ public class TopKFrequentElements {
         }
 
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            int number     = entry.getKey();
-            int frequency  = entry.getValue();
-            arr[frequency].add(number);
+            int num   = entry.getKey();
+            int freq  = entry.getValue();
+            arr[freq].add(num); // freq가 중복일 수 있다.
         }
 
         // Add most frequent numbers to result
         List<Integer> result = new ArrayList<>();
-        for (int j = max; j >= 1; j--) {
-            if (arr[j].size() > 0) {
-                for (int a : arr[j]) {
-                    result.add(a);
+        for (int freq = max; freq >= 1; freq--) {
+            if (arr[freq].size() > 0) {
+                for (int num : arr[freq]) {
+                    result.add(num);
                     if (result.size() == k) {
                         return result;
                     }

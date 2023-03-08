@@ -5,7 +5,7 @@ public class Trie extends ImplementTrie {
      * returns the node where search ends
      */
     public boolean search(String word) {
-        return dfs(word, root);
+        return dfs(word, this.root);
     }
 
     private boolean dfs(String word, TrieNode node) {

@@ -28,10 +28,9 @@ public class MergeKSortedLists {
         }
 
         while (!minHeap.isEmpty()) {
-
             ListNode node = minHeap.poll();
             if (node.next != null) {
-                // node.next가 null이 아니면 offer 한다.
+                // node.next가 null이 아니면, node.next를 offer(push) 한다.
                 minHeap.offer(node.next);
             }
 
@@ -61,13 +60,16 @@ public class MergeKSortedLists {
         }
 
         int mid = (end - start) / 2 + start;
-        ListNode leftHalf = merge(lists, start, mid);
+        ListNode leftHalf  = merge(lists, start,   mid);
         ListNode rightHalf = merge(lists, mid + 1, end);
 
         return mergeTwoLists(leftHalf, rightHalf);
     }
 
-    // 21. Merge Two Sorted Lists
+    /**
+     * Merge Two Sorted Lists
+     * while을 돌면서 list1과 list2의 값을 비교해서 curr.next에 연결한다.
+     */
     private ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         ListNode dummy = new ListNode(0);
         ListNode curr = dummy;

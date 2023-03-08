@@ -10,7 +10,7 @@ public class KthSmallestElementinaBST {
      * SC: O(h)
      */
     public int sol1(TreeNode root, int k) {
-        // leftCount -> left (mid 보다 작은) node 개수
+        // leftCount -> root (mid) 보다 작은 left node 들의 개수
         int leftCount = countNodes(root.left);
 
         if (leftCount + 1 == k) {
@@ -23,7 +23,7 @@ public class KthSmallestElementinaBST {
         }
 
         // leftCount가 K보다 작으면 
-        // left와 root의 개수는 k에서 빼주고 right side를 다시 찾는다.
+        // left와 root (1)의 개수를 k에서 빼준 값을 right side를 다시 찾는다.
         return sol1(root.right, k - 1 - leftCount);
     }
 

@@ -23,14 +23,16 @@ public class FindMedianfromDataStream {
      * median -> (10 + 11) / 2 -> 10.5
      * 
      * <Algorithm>
-     * 1. 새로운 num을 minHeap에 offer한다 -> 그러면 minHeap의 root 값이 제일 작은 값이다.
-     * 2. 그리고 minHeap의 제일 작은 값을 poll 한다.
+     * 1. new num이 maxHeap(Lower half)의 root(peek)보다
+     *    작거나 같으면 -> min Heap(Higher half)에 offer
+     *    크다면       -> max Heap(Lower half)에 offer
+     * 2. min Heap (Higher half) 의 제일 작은 값을 poll 한다.
      * 3. 그 값을 다시 maxHeap에 넣는다.
      * 
      * <Core>
      * minHeap과 maxHeap의 size 차이가 +1을 넘지 않도록 밸런스를 맞추는 것이 핵심
-     * 1. empty 상태에서 추가되면 minHeap의 모든 값은 maxHeap 보다 작다
-     * 2. maxHeap이 항상크게, maxHeap과 minHeap의 차이가 1을 넘지 않도록
+     * 1. empty 상태에서 추가되면 min Heap(Higher)의 모든 값은 max Heap(Lower) 보다 작다
+     * 2. maxHeap이 항상 크게, maxHeap과 minHeap의 차이가 1을 넘지 않도록
      */
     public void addNum(int num) {
         if (maxHeap.isEmpty() || num <= maxHeap.peek()) {

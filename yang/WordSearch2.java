@@ -9,7 +9,6 @@ public class WordSearch2 {
     private Set<String> result = new HashSet<>();
 
     public List<String> findWords(char[][] board, String[] words) {
-
         for (String word : words) {
             this.trie.insert(word);
         }

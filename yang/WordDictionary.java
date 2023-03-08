@@ -13,13 +13,12 @@ public class WordDictionary {
         this.trie.insert(word);
     }
 
-
     /**
-     * Returns if the word is in the data structure. A word could
-     * contain the dot character '.' to represent any one letter
+     * Returns if the word is in the data structure.
+     * A word could contain the dot character '.' to represent any one letter
+     * class Trie extends ImplementTrie의 dfs() 코드를 확인해야 된다.
      */
     public boolean search(String word) {
-        // trie.search method를 봐야 됩니다.
         return this.trie.search(word);
     }
 

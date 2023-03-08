@@ -14,6 +14,7 @@ public class ConstructBinaryTreefromPreorderandInorderTraversal {
     public TreeNode sol1(int[] preorder, int[] inorder) {
 
         // inorder 배열을 map에 index와 같이 저장한다.
+        // <value, index>
         Map<Integer, Integer> inToIndex = new HashMap<>();
 
         for (int i = 0; i < inorder.length; i++) {
@@ -38,7 +39,8 @@ public class ConstructBinaryTreefromPreorderandInorderTraversal {
         // rootInIndex -> inorder에서 root의 위치의 index
         int rootInIndex = inToIndex.get(rootVal);
 
-        // inorder에서 rootVal을 중심으로 left 파트
+        // inorder에서 rootVal을 중심으로 left Size를 구하고
+        // 그 leftSize를 가지고 preOrder 배열을 나눈다.
         int leftSize = rootInIndex - inStart;
 
         // preorder은 preStart와 preEnd에 leftSize를 더하여 left와 right를 나눈다.
@@ -53,6 +55,7 @@ public class ConstructBinaryTreefromPreorderandInorderTraversal {
                            inToIndex);
         return root;
     }
+
 
     public static void main(String[] args) {
         ConstructBinaryTreefromPreorderandInorderTraversal t
