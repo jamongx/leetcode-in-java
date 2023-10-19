@@ -1,4 +1,4 @@
-// define a BNode class with TreeNode and it's boundaries
+﻿// define a BNode class with TreeNode and it's boundaries
 public class BNode {
     TreeNode n;
     double left;

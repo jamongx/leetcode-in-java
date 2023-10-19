@@ -1,4 +1,3 @@
-
 public class ImplementTrie {
 
     protected TrieNode root = new TrieNode();
